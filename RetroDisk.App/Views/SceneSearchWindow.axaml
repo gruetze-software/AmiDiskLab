@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AmiDiskLab.App.Views.SceneSearchWindow"
+        Icon="/Assets/AmiDiskLab.ico"
+        Background="#34383F"
+        Title="Search Demozoo" Width="440" Height="190" MinWidth="350"
+        WindowStartupLocation="CenterOwner" FontSize="12">
+  <Grid Margin="20" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="10">
+    <TextBlock Text="Search scene production" FontSize="18" FontWeight="SemiBold"/>
+    <TextBlock Grid.Row="1" Text="Enter an exact title, production ID, or Demozoo production link."
+               TextWrapping="Wrap" Opacity="0.7"/>
+    <TextBox x:Name="TitleBox" Grid.Row="2" MaxLength="200" Watermark="Title, ID, or Demozoo link"/>
+    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+      <Button Content="Cancel" Click="Cancel_Click"/>
+      <Button Content="Search" Click="Search_Click" IsDefault="True"/>
+    </StackPanel>
+  </Grid>
+</Window>

@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="using:AmiDiskLab.Core.Models"
+        x:Class="AmiDiskLab.App.Views.ScreenScraperMatchesWindow"
+        Icon="/Assets/AmiDiskLab.ico"
+        Background="#34383F"
+        Title="ScreenScraper matches" Width="650" Height="520" MinWidth="500" MinHeight="350"
+        WindowStartupLocation="CenterOwner" FontSize="12">
+  <Grid Margin="20" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">
+    <TextBlock x:Name="HeadingText" Text="Choose a match" FontSize="19" FontWeight="SemiBold"/>
+    <TextBlock x:Name="ExplanationText" Grid.Row="1" Text="Name matches are suggestions; their ADF hash was not verified. Check the details before saving."
+               TextWrapping="Wrap" Opacity="0.75"/>
+    <ListBox x:Name="MatchesBox" Grid.Row="2" DoubleTapped="Choose_Click">
+      <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="models:MetadataSuggestion">
+          <StackPanel Margin="6" Spacing="3">
+            <TextBlock Text="{Binding Metadata.Title}" FontWeight="SemiBold"/>
+            <TextBlock Text="{Binding Source}" FontSize="11" Opacity="0.7"/>
+            <TextBlock Text="{Binding Metadata.Publisher}" FontSize="11" Opacity="0.7"/>
+            <TextBlock Text="{Binding Metadata.SceneGroup}" FontSize="11" Opacity="0.7"/>
+            <TextBlock Text="{Binding Metadata.ProductionType}" FontSize="11" Opacity="0.7"/>
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+      <Button Click="Cancel_Click">
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <PathIcon Width="14" Height="14" Data="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
+          <TextBlock Text="Cancel"/>
+        </StackPanel>
+      </Button>
+      <Button Click="Choose_Click">
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <PathIcon Width="14" Height="14" Data="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/>
+          <TextBlock Text="Use selected match"/>
+        </StackPanel>
+      </Button>
+    </StackPanel>
+  </Grid>
+</Window>

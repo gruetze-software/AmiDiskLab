@@ -1,0 +1,103 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AmiDiskLab.App.Views.MetadataWindow"
+        Background="#34383F"
+        Icon="/Assets/AmiDiskLab.ico"
+        Title="Software metadata" Width="700" Height="760" FontSize="13"
+        MinWidth="560" MinHeight="560"
+        WindowStartupLocation="CenterOwner">
+  <Grid Margin="20" RowDefinitions="*,Auto" RowSpacing="12">
+    <ScrollViewer Grid.Row="0">
+      <StackPanel Spacing="10" Margin="0,0,20,0">
+        <TextBlock Text="Software metadata" FontSize="18" FontWeight="Bold"/>
+        <TextBlock x:Name="FileNameText" TextTrimming="CharacterEllipsis"/>
+        <TextBlock Text="Title"/>
+        <TextBox x:Name="TitleBox" MaxLength="200" Watermark="Optional title"/>
+        <TextBlock Text="Studio / developer"/>
+        <TextBox x:Name="StudioBox" MaxLength="200" Watermark="Optional studio"/>
+        <StackPanel x:Name="StudioLogoPanel" IsVisible="False" Orientation="Horizontal"
+                    Spacing="12" HorizontalAlignment="Left" VerticalAlignment="Center">
+          <Image x:Name="StudioLogoImage" MaxWidth="240" Height="72" Stretch="Uniform"
+                 Cursor="Hand" DoubleTapped="StudioLogoImage_DoubleTapped"/>
+          <Button Click="RemoveStudioLogo_Click" ToolTip.Tip="Remove the shared studio logo">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <PathIcon Width="15" Height="15"
+                        Data="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z M8 9h8v10H8V9z M15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+              <TextBlock Text="Remove logo"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+        <TextBlock x:Name="StudioLogoStatus" FontSize="11" Opacity="0.7"/>
+        <TextBlock Text="Scene group"/>
+        <TextBox x:Name="SceneGroupBox" MaxLength="200" Watermark="Optional scene group"/>
+        <TextBlock Text="Production type"/>
+        <TextBox x:Name="ProductionTypeBox" MaxLength="100" Watermark="Demo, Intro, Musicdisk..."/>
+        <TextBlock Text="Publisher"/>
+        <TextBox x:Name="PublisherBox" MaxLength="200" Watermark="Optional publisher"/>
+        <TextBox x:Name="PublisherLogoUrlBox" MaxLength="2000" IsVisible="False"/>
+        <StackPanel x:Name="PublisherLogoPanel" IsVisible="False" Orientation="Horizontal"
+                    Spacing="12" HorizontalAlignment="Left" VerticalAlignment="Center">
+          <Image x:Name="PublisherLogoImage" MaxWidth="240" Height="72" Stretch="Uniform"
+                 Cursor="Hand" DoubleTapped="PublisherLogoImage_DoubleTapped"/>
+          <Button x:Name="RemovePublisherLogoButton" Click="RemovePublisherLogo_Click"
+                  ToolTip.Tip="Remove the shared publisher logo">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <PathIcon Width="15" Height="15"
+                        Data="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12z M8 9h8v10H8V9z M15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+              <TextBlock Text="Remove logo"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+        <TextBlock x:Name="PublisherLogoStatus" FontSize="11" Opacity="0.7"/>
+        <TextBlock Text="Release date"/>
+        <TextBox x:Name="ReleaseDateBox" MaxLength="20" Watermark="YYYY or YYYY-MM-DD"/>
+        <TextBlock Text="Category"/>
+        <ComboBox x:Name="CategoryBox">
+          <ComboBoxItem Content="Unknown"/>
+          <ComboBoxItem Content="Game"/>
+          <ComboBoxItem Content="Demo"/>
+          <ComboBoxItem Content="Program"/>
+          <ComboBoxItem Content="Music"/>
+          <ComboBoxItem Content="Compilation"/>
+          <ComboBoxItem Content="Disk magazine"/>
+          <ComboBoxItem Content="Other"/>
+        </ComboBox>
+        <TextBlock Text="Genre"/>
+        <TextBox x:Name="GenreBox" MaxLength="200" Watermark="Optional genre"/>
+        <TextBlock Text="Rating"/>
+        <NumericUpDown x:Name="RatingBox" Minimum="0" Maximum="5" Increment="0.5"
+                       FormatString="0.0" Watermark="0 to 5 stars"/>
+        <TextBlock Text="Description"/>
+        <TextBox x:Name="DescriptionBox" MaxLength="10000" AcceptsReturn="True"
+                 TextWrapping="Wrap" MinHeight="100"/>
+        <TextBlock x:Name="CoverLabel" Text="Cover"/>
+        <TextBox x:Name="CoverUrlBox" MaxLength="2000" IsVisible="False"/>
+        <Image x:Name="CoverImage" Width="170" Height="210" Stretch="Uniform" IsVisible="False"
+               DoubleTapped="CoverImage_DoubleTapped" Cursor="Hand"
+               HorizontalAlignment="Left"/>
+        <TextBlock x:Name="CoverStatus" FontSize="12" Opacity="0.7"/>
+        <TextBlock Text="Game screenshot"/>
+        <TextBox x:Name="ScreenshotUrlBox" MaxLength="2000" IsVisible="False"/>
+        <Image x:Name="ScreenshotImage" Width="320" Height="200" Stretch="Uniform" IsVisible="False"
+               DoubleTapped="ScreenshotImage_DoubleTapped" Cursor="Hand"
+               HorizontalAlignment="Left"/>
+        <TextBlock x:Name="ScreenshotStatus" FontSize="12" Opacity="0.7"/>
+        <TextBlock x:Name="SourceText" FontSize="12" Opacity="0.7" TextWrapping="Wrap"/>
+      </StackPanel>
+    </ScrollViewer>
+    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+      <Button Click="Cancel_Click">
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <PathIcon Width="14" Height="14" Data="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
+          <TextBlock Text="Cancel"/>
+        </StackPanel>
+      </Button>
+      <Button x:Name="SaveButton" Click="Save_Click">
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <PathIcon Width="14" Height="14" Data="M5 3h14l2 2v16H3V3h2zm2 0v6h10V3H7zm0 11v7h10v-7H7z"/>
+          <TextBlock Text="Save"/>
+        </StackPanel>
+      </Button>
+    </StackPanel>
+  </Grid>
+</Window>

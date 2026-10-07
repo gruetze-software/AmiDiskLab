@@ -1,0 +1,9 @@
+name = "amidisklab-api"
+main = "worker.js"
+compatibility_date = "2026-10-08"
+workers_dev = true
+
+# Store all three values with `wrangler secret put`; never place them here:
+# SCREENSCRAPER_DEVELOPER_ID
+# SCREENSCRAPER_DEVELOPER_PASSWORD
+# MEDIA_TOKEN_SECRET

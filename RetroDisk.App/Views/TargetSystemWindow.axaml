@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AmiDiskLab.App.Views.TargetSystemWindow"
+        Icon="/Assets/AmiDiskLab.ico"
+        Background="#34383F"
+        Title="Amiga target system" Width="420" Height="310"
+        CanResize="False" WindowStartupLocation="CenterOwner">
+  <StackPanel Margin="20" Spacing="12">
+    <TextBlock Text="Amiga 500 target system" FontSize="18" FontWeight="Bold"/>
+    <TextBlock Text="CPU: Motorola 68000 (A500)"/>
+    <TextBlock Text="Kickstart"/>
+    <ComboBox x:Name="KickstartBox">
+      <ComboBoxItem Content="1.3"/>
+      <ComboBoxItem Content="2.0"/>
+      <ComboBoxItem Content="3.1"/>
+    </ComboBox>
+    <TextBlock Text="RAM"/>
+    <ComboBox x:Name="RamBox">
+      <ComboBoxItem Content="1 MiB"/>
+      <ComboBoxItem Content="2 MiB"/>
+      <ComboBoxItem Content="4 MiB"/>
+      <ComboBoxItem Content="8 MiB"/>
+    </ComboBox>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+      <Button Content="Cancel" Click="Cancel_Click"/>
+      <Button Content="Save" Click="Save_Click"/>
+    </StackPanel>
+  </StackPanel>
+</Window>

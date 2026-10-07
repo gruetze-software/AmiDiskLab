@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="RetroDisk.App/AmiDiskLab.App.csproj" />
+  <Project Path="RetroDisk.Core/AmiDiskLab.Core.csproj" />
+  <Project Path="RetroDisk.Infrastructure/AmiDiskLab.Infrastructure.csproj" />
+  <Project Path="RetroDisk.Tests/AmiDiskLab.Tests.csproj" />
+</Solution>

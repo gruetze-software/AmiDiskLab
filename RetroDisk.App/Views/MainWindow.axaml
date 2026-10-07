@@ -1,0 +1,277 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AmiDiskLab.App.ViewModels"
+        xmlns:app="using:AmiDiskLab.App"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DesignWidth="1000"
+        d:DesignHeight="600"
+        x:Class="AmiDiskLab.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/AmiDiskLab.ico"
+        Title="AmiDiskLab"
+        Width="1120"
+        Height="650"
+        MinWidth="1100"
+        MinHeight="450"
+        FontSize="13">
+	<Window.Resources>
+      <app:CoverThumbnailConverter x:Key="CoverThumbnailConverter"/>
+      <app:DuplicateTextBrushConverter x:Key="DuplicateTextBrushConverter"/>
+      <app:HasValueConverter x:Key="HasValueConverter"/>
+      <app:BrandLogoVisibilityConverter x:Key="BrandLogoVisibilityConverter"/>
+    </Window.Resources>
+    <Window.Styles>
+      <Style Selector="Button.sort-header">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0,6"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+      </Style>
+      <Style Selector="TextBlock.cell-text">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="MaxLines" Value="2"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+      </Style>
+      <Style Selector="ListBox.software-list">
+        <Setter Property="Background" Value="#34383F"/>
+        <Setter Property="BorderThickness" Value="0"/>
+      </Style>
+      <Style Selector="ListBox.software-list > ListBoxItem">
+        <Setter Property="Background" Value="#3B3F46"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0,0,0,1"/>
+      </Style>
+      <Style Selector="ListBox.software-list > ListBoxItem:pointerover">
+        <Setter Property="Background" Value="#474C54"/>
+      </Style>
+      <Style Selector="ListBox.software-list > ListBoxItem:selected">
+        <Setter Property="Background" Value="#17679B"/>
+      </Style>
+    </Window.Styles>
+
+	<Grid Margin="16"
+      RowDefinitions="Auto,*,Auto,Auto"
+      RowSpacing="12">
+
+		<!-- Header -->
+		<Border Grid.Row="0" BorderBrush="#50545A" BorderThickness="1" CornerRadius="10" Padding="12,9">
+          <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="10" RowSpacing="6">
+            <StackPanel Grid.RowSpan="2" Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+              <Image Source="/Assets/AmiDiskLab.ico" Width="52" Height="52" Stretch="Uniform"/>
+              <StackPanel Spacing="1" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
+                  <TextBlock Text="AmiDiskLab" FontSize="22" FontWeight="Bold"/>
+                  <TextBlock Text="by Grütze-Software" FontSize="11" Opacity="0.65"
+                             VerticalAlignment="Bottom" Margin="0,0,0,3"/>
+                </StackPanel>
+                <TextBlock Text="{Binding ProductSubtitle}" FontSize="11" Opacity="0.65"/>
+              </StackPanel>
+            </StackPanel>
+            <Button Grid.Column="1" Padding="12,7" IsEnabled="{Binding CanStartOperation}" Click="SelectFolder_Click">
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <PathIcon Width="16" Height="16" Data="M10 4H2C.9 4 0 4.9 0 6v12c0 1.1 .9 2 2 2h20c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2H12l-2-2z"/>
+                <TextBlock Text="Select folder"/>
+              </StackPanel>
+            </Button>
+            <TextBlock Grid.Column="2" Text="Right-click an item for actions" Opacity="0.65"
+                       VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+              <Button Padding="12,7" IsEnabled="{Binding CanStartOperation}" Click="Settings_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <PathIcon Width="16" Height="16" Data="M19.4 13a7.9 7.9 0 0 0 0-2l2-1.5-2-3.5-2.3.9a8.8 8.8 0 0 0-1.7-1L15 3h-4l-.4 2.9a8.8 8.8 0 0 0-1.7 1L6.6 6 4.6 9.5l2 1.5a7.9 7.9 0 0 0 0 2l-2 1.5L6.6 18l2.3-.9c.5.4 1.1.7 1.7 1L11 21h4l.4-2.9c.6-.3 1.2-.6 1.7-1l2.3.9 2-3.5-2-1.5z M13 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                  <TextBlock Text="Settings"/>
+                </StackPanel>
+              </Button>
+              <Button Padding="12,7" Click="About_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <PathIcon Width="16" Height="16" Data="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z M11 10h2v7h-2z M11 6h2v2h-2z"/>
+                  <TextBlock Text="About"/>
+                </StackPanel>
+              </Button>
+            </StackPanel>
+            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding SelectedFolder}"
+                       VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Opacity="0.75"/>
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding TargetSystemSummary}"
+                       HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0.75"/>
+          </Grid>
+		</Border>
+
+		<!-- Disk images -->
+		<Border Grid.Row="1"
+        BorderBrush="#50545A" BorderThickness="1"
+        Background="#34383F"
+        CornerRadius="9"
+        Padding="8">
+
+			<Grid RowDefinitions="Auto,*">
+
+				<!-- Column headers -->
+				<Grid Grid.Row="0"
+							IsEnabled="{Binding CanStartOperation}"
+							ColumnDefinitions="82,1.6*,72,56,70,110,1.1*,0.85*,48,76,68"
+							ColumnSpacing="12"
+							Margin="8,10,24,12">
+
+					<Button Grid.Column="1" Classes="sort-header" Tag="Name"
+                            Content="{Binding NameSortHeader}" Click="SortHeader_Click"/>
+					<Button Grid.Column="2" Classes="sort-header" Tag="Type"
+                            Content="{Binding TypeSortHeader}" Click="SortHeader_Click"/>
+					<Button Grid.Column="3" Classes="sort-header" Tag="Format"
+                            Content="{Binding FormatSortHeader}" Click="SortHeader_Click"/>
+					<Button Grid.Column="4" Classes="sort-header" Tag="Category"
+                            Content="{Binding CategorySortHeader}" Click="SortHeader_Click"/>
+					<Button Grid.Column="5" Classes="sort-header" Tag="Genre"
+                            Content="{Binding GenreSortHeader}" Click="SortHeader_Click"/>
+					<Button Grid.Column="6" Classes="sort-header" Tag="Publisher"
+                            Content="{Binding PublisherSortHeader}" Click="SortHeader_Click"/>
+					<Button Grid.Column="7" Classes="sort-header" Tag="Studio"
+                            Content="{Binding StudioSortHeader}" Click="SortHeader_Click"/>
+					<Button Grid.Column="8" Classes="sort-header" Tag="Year"
+                            Content="{Binding YearSortHeader}" Click="SortHeader_Click"/>
+					<Button Grid.Column="9" Classes="sort-header" Tag="Rating"
+                            Content="{Binding RatingSortHeader}" Click="SortHeader_Click"/>
+					<Button Grid.Column="10" Classes="sort-header" Tag="Size"
+                            Content="{Binding SizeSortHeader}" Click="SortHeader_Click"/>
+				</Grid>
+
+				<!-- Software list -->
+				<ListBox Grid.Row="1"
+								 Classes="software-list"
+								 ItemsSource="{Binding SoftwareItems}"
+								 SelectionMode="Single"
+								 PointerPressed="SoftwareList_PointerPressed"
+								 DoubleTapped="SoftwareList_DoubleTapped"
+								 SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+
+                    <ListBox.ContextMenu>
+                      <ContextMenu x:Name="SoftwareContextMenu">
+                        <MenuItem Header="Edit metadata" IsEnabled="{Binding CanEditMetadata}" Click="EditMetadata_Click">
+                          <MenuItem.Icon><PathIcon Width="16" Height="16" Data="M3 17.25V21h3.75L17.8 9.95l-3.75-3.75L3 17.25z M20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Find game metadata (ScreenScraper.fr)" IsEnabled="{Binding CanLookupOnline}" Click="ScreenScraper_Click">
+                          <MenuItem.Icon><PathIcon Width="16" Height="16" Data="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.71.71l.27.28v.78l5 5 1.5-1.5-5-5z M10 14a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Find scene metadata (Demozoo)" IsEnabled="{Binding CanLookupScene}" Click="Demozoo_Click"/>
+                        <Separator/>
+                        <MenuItem Header="Show Cover" IsEnabled="{Binding CanShowCover}" Click="ShowCover_Click">
+                          <MenuItem.Icon><PathIcon Width="16" Height="16" Data="M3 3h18v18H3z M5 17l4-5 3 3 3-4 4 6z M7 7h3v3H7z"/></MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Show Screenshot" IsEnabled="{Binding CanShowScreenshot}" Click="ShowScreenshot_Click">
+                          <MenuItem.Icon><PathIcon Width="16" Height="16" Data="M2 3h20v15H2z M4 5v11h16V5z M9 19h6v2H9z"/></MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Open Path" IsEnabled="{Binding CanOpenPath}" Click="OpenPath_Click">
+                          <MenuItem.Icon><PathIcon Width="16" Height="16" Data="M10 4H2C.9 4 0 4.9 0 6v12c0 1.1 .9 2 2 2h20c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2H12l-2-2z"/></MenuItem.Icon>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="ADF actions" IsEnabled="{Binding CanCreateAdf}">
+                          <MenuItem.Icon><PathIcon Width="16" Height="16" Data="M5 3h14l2 2v16H3V3h2zm2 0v6h10V3H7zm0 11v7h10v-7H7z"/></MenuItem.Icon>
+                          <MenuItem Header="Create data ADF" Click="CreateAdf_Click"/>
+                          <MenuItem Header="Create A500 boot ADF" Click="CreateBootAdf_Click"/>
+                          <MenuItem Header="Extract disk ADFs" Click="ExtractDiskAdfs_Click"/>
+                        </MenuItem>
+                      </ContextMenu>
+                    </ListBox.ContextMenu>
+
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+						  <ContentControl Foreground="{Binding IsDuplicate, Converter={StaticResource DuplicateTextBrushConverter}}"
+						                  HorizontalContentAlignment="Stretch">
+							<Grid ColumnDefinitions="82,1.6*,72,56,70,110,1.1*,0.85*,48,76,68"
+									ColumnSpacing="12"
+									Margin="8,6" MinHeight="108">
+
+                                <Border Grid.Column="0" Width="80" Height="98" Background="#454A52"
+                                        BorderBrush="#60656D" BorderThickness="1" CornerRadius="5"
+                                        HorizontalAlignment="Left" VerticalAlignment="Center">
+                                  <Grid>
+                                    <TextBlock Text="ADF" FontSize="10" FontWeight="SemiBold" Opacity="0.4"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Image Width="78" Height="96" Stretch="Uniform"
+                                           Source="{Binding Metadata, Converter={StaticResource CoverThumbnailConverter}}"/>
+                                  </Grid>
+                                </Border>
+
+								<StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+								  <TextBlock Classes="cell-text" Text="{Binding DisplayTitle}" FontSize="15" FontWeight="SemiBold"/>
+                                  <TextBlock Classes="cell-text" Text="{Binding DisplaySubtitle}" FontSize="11" Opacity="0.72"/>
+                                </StackPanel>
+
+								<TextBlock Grid.Column="2" Classes="cell-text" Text="{Binding Type}"/>
+
+								<TextBlock Grid.Column="3" Classes="cell-text" Text="{Binding Format}"/>
+
+								<TextBlock Grid.Column="4" Classes="cell-text" Text="{Binding Category}"/>
+
+								<TextBlock Grid.Column="5" Classes="cell-text" Text="{Binding Genre}"/>
+
+								<Grid Grid.Column="6" ColumnDefinitions="Auto,*" ColumnSpacing="10" VerticalAlignment="Center">
+                                  <Image Grid.Column="0" Width="82" Height="64" Stretch="Uniform"
+                                         IsVisible="{Binding Metadata, Converter={StaticResource BrandLogoVisibilityConverter}, ConverterParameter=Publisher}"
+                                         Source="{Binding Metadata, Converter={StaticResource CoverThumbnailConverter}, ConverterParameter=PublisherLogo}"/>
+                                  <TextBlock Grid.Column="1" Classes="cell-text" Text="{Binding Publisher}"
+                                             IsVisible="{Binding Metadata, Converter={StaticResource BrandLogoVisibilityConverter}, ConverterParameter=PublisherMissing}"/>
+                                </Grid>
+
+								<Grid Grid.Column="7" VerticalAlignment="Center">
+                                  <Image Width="82" Height="64" Stretch="Uniform"
+                                         IsVisible="{Binding Metadata, Converter={StaticResource BrandLogoVisibilityConverter}, ConverterParameter=Studio}"
+                                         Source="{Binding Metadata, Converter={StaticResource CoverThumbnailConverter}, ConverterParameter=StudioLogo}"/>
+                                  <TextBlock Classes="cell-text" Text="{Binding Studio}"
+                                             IsVisible="{Binding Metadata, Converter={StaticResource BrandLogoVisibilityConverter}, ConverterParameter=StudioMissing}"/>
+                                </Grid>
+
+								<TextBlock Grid.Column="8" Classes="cell-text" Text="{Binding ReleaseYear}"/>
+
+								<TextBlock Grid.Column="9" Classes="cell-text" Text="{Binding RatingStars}"
+                                           Foreground="#FFD166" FontSize="14" ToolTip.Tip="{Binding Rating}"/>
+
+								<TextBlock Grid.Column="10" Classes="cell-text" Text="{Binding DisplaySize}"
+                                           TextAlignment="Right"/>
+
+							</Grid>
+						  </ContentControl>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+
+				</ListBox>
+
+			</Grid>
+
+		</Border>
+
+		<!-- Status -->
+		<TextBlock Grid.Row="2"
+							 Text="{Binding StatusText}"
+							 TextWrapping="Wrap"
+								 FontSize="12"/>
+
+		<!-- Progress -->
+		<StackPanel Grid.Row="3" IsVisible="{Binding IsBusy}"
+            Spacing="6">
+
+			<Button IsEnabled="{Binding IsBusy}" Click="Cancel_Click" HorizontalAlignment="Left">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <PathIcon Width="14" Height="14" Data="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
+                <TextBlock Text="Cancel"/>
+              </StackPanel>
+            </Button>
+<ProgressBar Minimum="0"
+									 Maximum="100"
+									 Value="{Binding ScanProgress}"
+									 Height="8"/>
+
+			<TextBlock Text="{Binding CurrentFile}"
+								 FontSize="12"
+								 Opacity="0.7"
+								 TextTrimming="CharacterEllipsis"/>
+
+		</StackPanel>
+
+	</Grid>
+
+</Window>

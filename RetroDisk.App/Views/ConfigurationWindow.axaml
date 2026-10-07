@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AmiDiskLab.App.Views.ConfigurationWindow"
+        Icon="/Assets/AmiDiskLab.ico"
+        Background="#34383F"
+        Title="Settings" Width="500" Height="560" MinWidth="460" MinHeight="500"
+        WindowStartupLocation="CenterOwner" FontSize="12">
+  <Grid Margin="20" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="12">
+    <TextBlock Text="Settings" FontSize="20" FontWeight="SemiBold"/>
+    <TabControl x:Name="SettingsTabs" Grid.Row="1">
+      <TabItem Header="Amiga target">
+        <StackPanel Margin="12" Spacing="10">
+          <TextBlock Text="Amiga 500 · Motorola 68000" FontWeight="SemiBold"/>
+          <TextBlock Text="Kickstart"/>
+          <ComboBox x:Name="KickstartBox">
+            <ComboBoxItem Content="1.3"/><ComboBoxItem Content="2.0"/><ComboBoxItem Content="3.1"/>
+          </ComboBox>
+          <TextBlock Text="RAM"/>
+          <ComboBox x:Name="RamBox">
+            <ComboBoxItem Content="1 MiB"/><ComboBoxItem Content="2 MiB"/>
+            <ComboBoxItem Content="4 MiB"/><ComboBoxItem Content="8 MiB"/>
+          </ComboBox>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="ScreenScraper">
+        <StackPanel Margin="12" Spacing="8">
+          <TextBlock Text="ScreenScraper username (optional)"/><TextBox x:Name="UserIdBox"/>
+          <TextBlock Text="ScreenScraper password (optional)"/><TextBox x:Name="UserPasswordBox" PasswordChar="●"/>
+          <TextBlock x:Name="CredentialHint" Text="A personal ScreenScraper account is not required. Signing in uses your account limits and member benefits. Your credentials are encrypted for your Windows account. Clear both fields and save to remove them."
+                     Opacity="0.7" TextWrapping="Wrap" Margin="0,0,0,4"/>
+          <TextBlock Text="Description language"/>
+          <ComboBox x:Name="LanguageBox">
+            <ComboBoxItem Content="German"/><ComboBoxItem Content="English"/>
+            <ComboBoxItem Content="French"/><ComboBoxItem Content="Spanish"/>
+            <ComboBoxItem Content="Italian"/>
+          </ComboBox>
+          <TextBlock Text="Region for titles, release dates, and covers"/>
+          <ComboBox x:Name="RegionBox">
+            <ComboBoxItem Content="Europe"/><ComboBoxItem Content="USA"/>
+            <ComboBoxItem Content="Japan"/><ComboBoxItem Content="World"/>
+          </ComboBox>
+        </StackPanel>
+      </TabItem>
+    </TabControl>
+    <TextBlock x:Name="ValidationText" Grid.Row="2" Foreground="OrangeRed" TextWrapping="Wrap"/>
+    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+      <Button Click="Cancel_Click">
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <PathIcon Width="14" Height="14" Data="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
+          <TextBlock Text="Cancel"/>
+        </StackPanel>
+      </Button>
+      <Button Click="Save_Click">
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <PathIcon Width="14" Height="14" Data="M5 3h14l2 2v16H3V3h2zm2 0v6h10V3H7zm0 11v7h10v-7H7z"/>
+          <TextBlock Text="Save settings"/>
+        </StackPanel>
+      </Button>
+    </StackPanel>
+  </Grid>
+</Window>

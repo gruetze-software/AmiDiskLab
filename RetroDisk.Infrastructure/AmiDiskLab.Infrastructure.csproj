@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+		<RootNamespace>AmiDiskLab.Infrastructure</RootNamespace>
+		<AssemblyName>AmiDiskLab.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amiga.FileFormats.LHA" Version="1.0.2" />
+    <PackageReference Include="Hst.Amiga" Version="0.6.238" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RetroDisk.Core\AmiDiskLab.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Explicit entry keeps Visual Studio's design-time build in sync when this source file
+       is added while the solution is already open. -->
+  <ItemGroup>
+    <Compile Remove="Metadata\WikimediaPublisherLogoClient.cs" />
+    <Compile Include="Metadata\WikimediaPublisherLogoClient.cs" />
+  </ItemGroup>
+
+</Project>

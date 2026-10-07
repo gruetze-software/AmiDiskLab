@@ -1,0 +1,123 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AmiDiskLab.App.Views.AboutWindow"
+        Icon="/Assets/AmiDiskLab.ico"
+        Title="About AmiDiskLab"
+        Background="#34383F"
+        Width="520"
+        Height="580"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner">
+
+	<ScrollViewer>
+		<StackPanel Margin="32"
+								Spacing="14"
+								HorizontalAlignment="Center">
+
+			<!-- Grütze-Software logo -->
+			<Image Source="/Assets/AmiDiskLab_128.png"
+						 Width="128"
+						 Height="128"
+						 Stretch="Uniform"
+						 HorizontalAlignment="Center"/>
+
+			<TextBlock Text="AmiDiskLab"
+								 FontSize="30"
+								 FontWeight="Bold"
+								 HorizontalAlignment="Center"/>
+
+			<TextBlock Text="Amiga Disk &amp; Software Manager"
+								 FontSize="16"
+								 Opacity="0.8"
+								 HorizontalAlignment="Center"/>
+
+			<TextBlock x:Name="VersionText"
+								 FontSize="13"
+								 HorizontalAlignment="Center"/>
+
+			<Separator Margin="0,8"/>
+
+			<TextBlock Text="Explore. Convert. Preserve. Play."
+								 FontSize="16"
+								 FontWeight="SemiBold"
+								 HorizontalAlignment="Center"/>
+
+			<TextBlock Text="AmiDiskLab is a cross-platform tool for managing, analyzing and converting Amiga disk images, archives and software collections."
+								 TextWrapping="Wrap"
+								 TextAlignment="Center"
+								 MaxWidth="420"/>
+
+			<Separator Margin="0,8"/>
+
+			<TextBlock Text="Developed by"
+           FontSize="12"
+           Opacity="0.7"
+           HorizontalAlignment="Center"/>
+
+			<Image Source="/Assets/gs_icon_128.png"
+						 Width="96"
+						 Height="96"
+						 Stretch="Uniform"
+						 HorizontalAlignment="Center"/>
+
+			<TextBlock Text="Grütze-Software"
+								 FontWeight="Bold"
+								 HorizontalAlignment="Center"/>
+
+			<TextBlock Text="Copyright © 2026 Christoph Schaefer"
+								 FontSize="12"
+								 HorizontalAlignment="Center"/>
+
+			<Button Content="github.com/gruetze-software"
+							Tag="https://github.com/gruetze-software"
+							Click="ExternalLink_Click"
+							Background="Transparent"
+							BorderThickness="0"
+							Foreground="#63B3FF"
+							Padding="4,2"
+							Cursor="Hand"
+							HorizontalAlignment="Center"/>
+
+			<Separator Margin="0,8"/>
+
+			<TextBlock Text="Online services"
+							 FontWeight="SemiBold"
+							 HorizontalAlignment="Center"/>
+
+			<TextBlock Text="Game metadata and media are provided by ScreenScraper.fr. Scene production metadata is provided by Demozoo. The protected ScreenScraper proxy is hosted on Cloudflare Workers."
+							 FontSize="11"
+							 Opacity="0.8"
+							 TextWrapping="Wrap"
+							 TextAlignment="Center"
+							 MaxWidth="420"/>
+
+			<StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+				<Button Content="ScreenScraper.fr" Tag="https://www.screenscraper.fr"
+							Click="ExternalLink_Click" Background="Transparent" BorderThickness="0"
+							Foreground="#63B3FF" Padding="3,2" Cursor="Hand"/>
+				<Button Content="Demozoo" Tag="https://demozoo.org"
+							Click="ExternalLink_Click" Background="Transparent" BorderThickness="0"
+							Foreground="#63B3FF" Padding="3,2" Cursor="Hand"/>
+				<Button Content="Cloudflare" Tag="https://www.cloudflare.com"
+							Click="ExternalLink_Click" Background="Transparent" BorderThickness="0"
+							Foreground="#63B3FF" Padding="3,2" Cursor="Hand"/>
+			</StackPanel>
+
+			<TextBlock Text="AmiDiskLab is an independent project and is not affiliated with or endorsed by the owners of the Amiga trademarks."
+								 FontSize="11"
+								 Opacity="0.65"
+								 TextWrapping="Wrap"
+								 TextAlignment="Center"
+								 MaxWidth="420"
+								 Margin="0,8"/>
+
+			<Button Content="Close"
+							Width="110"
+							HorizontalAlignment="Center"
+							Margin="0,8,0,0"
+							Click="Close_Click"/>
+
+		</StackPanel>
+	</ScrollViewer>
+
+</Window>

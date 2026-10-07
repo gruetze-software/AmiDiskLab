@@ -1,0 +1,22 @@
+name: Build and test
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: dotnet restore AmiDiskLab.slnx
+      - run: dotnet build AmiDiskLab.slnx --no-restore --configuration Release
+      - run: dotnet test AmiDiskLab.slnx --no-build --no-restore --configuration Release --blame-hang-timeout 60s --collect:"XPlat Code Coverage"
