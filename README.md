@@ -1,31 +1,144 @@
-# AmiDiskLab
+<p align="center">
+  <img src="AmiDiskLab_256.png" width="180" alt="AmiDiskLab application logo">
+</p>
 
-Avalonia-Anwendung für Amiga-Software-Sammlungen. Der aktuelle Stand erkennt ADF,
-HFE, DMS, IPF und LHA anhand ihrer Dateiendung, markiert bytegleiche Dateien mit
-SHA-256 und erstellt aus LHA-Archiven ein 880-KiB-FFS-Datenimage (DOS\1).
-Für einen Amiga 500 mit Kickstart 1.3 gibt es außerdem einen eigenen Bootexport
-mit OFS (DOS\0) für geeignete AmigaDOS-Programme.
+<h1 align="center">AmiDiskLab</h1>
 
-> **Projektstatus:** Version 1.0. Vor dem Einsatz mit wichtigen Images
-> Sicherungskopien verwenden und erzeugte ADFs zunächst im Emulator oder auf einer
-> separaten Kopie testen.
+<p align="center">
+  <strong>Amiga Disk &amp; Software Manager</strong><br>
+  Organize disk collections, enrich them with metadata, and create or extract ADF images.
+</p>
 
-Hinweise zum erstmaligen Anlegen und Hochladen eines GitHub-Repositorys stehen in
-[docs/GITHUB_PUBLISHING.md](docs/GITHUB_PUBLISHING.md).
+<p align="center">
+  <a href="https://github.com/gruetze-software/AmiDiskLab/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/gruetze-software/AmiDiskLab"></a>
+  <a href="https://github.com/gruetze-software/AmiDiskLab/actions/workflows/build.yml"><img alt="Build status" src="https://github.com/gruetze-software/AmiDiskLab/actions/workflows/build.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+</p>
 
-GitHub Releases enthalten eigenständige Downloads für Windows x64, Linux x64
-sowie macOS auf Intel- und Apple-Silicon-Prozessoren. Eine separate .NET-Installation
-ist für diese Pakete nicht erforderlich.
+## Ready for Windows, Linux, and macOS
 
-## Lizenz
+AmiDiskLab 1.0 is available as a **self-contained desktop application** for:
 
-AmiDiskLab wird unter der [MIT-Lizenz](LICENSE) veröffentlicht. Fremde Amiga-
-Software, ROMs, Diskettenabbilder und online abgerufene Metadaten oder Medien
-sind nicht Bestandteil dieser Lizenz und gehören nicht zum Repository.
+- Windows x64
+- Linux x64
+- macOS on Apple Silicon
+- macOS on Intel
 
-## Entwickeln
+**No separate .NET runtime or SDK installation is required.** Download the package for your
+platform from the [latest release](https://github.com/gruetze-software/AmiDiskLab/releases/latest),
+extract it, and start AmiDiskLab.
 
-Voraussetzung: .NET SDK 10.0 (Ziel aller Projekte: net10.0).
+## Highlights
+
+### Manage Amiga software collections
+
+- Scan folders recursively for **ADF, HFE, DMS, IPF, and LHA** files.
+- Remember and automatically reopen the last selected collection.
+- Detect byte-identical duplicates with SHA-256 and mark their rows in red.
+- Sort by name, type, format, category, genre, publisher, studio, release year, rating, or size.
+- Open the containing folder, cover, or screenshot directly from the context menu.
+
+### Recognize multi-disk games
+
+AmiDiskLab groups common disk naming schemes into a single collection entry, including
+`Game (Disk 1 of 3)`, `Game (A)` through `Game (F)`, `Game 1-2`, and numbered names such
+as `Game01`. Original disk files remain separate and unchanged. The list shows the disk
+count and stores shared metadata for the complete set.
+
+### Find rich game metadata
+
+**Find game metadata (ScreenScraper.fr)** supports hash and name-based matching:
+
+- CRC32, MD5, SHA-1, file size, and filename lookup
+- alternative cleaned-title searches when no hash match exists
+- regional titles, dates, and covers
+- localized descriptions and genres
+- publisher and developer/studio information
+- ratings, cover art, screenshots, and company logos
+- multiple-result selection when a search is ambiguous
+
+Cover art, screenshots, and logos are cached locally for offline use. A personal
+ScreenScraper account is optional. On Windows, optional personal credentials are encrypted
+with Windows DPAPI. On Linux and macOS they are used only for the current session and are
+not stored.
+
+ScreenScraper developer credentials are never included in the application. Requests use a
+restricted proxy hosted on Cloudflare Workers, and media URLs are replaced with short-lived
+encrypted download links. ADF contents are not uploaded.
+
+### Find Amiga scene metadata
+
+**Find scene metadata (Demozoo)** searches by exact production title, numeric production ID,
+or Demozoo link. It can import the production title and type, scene group, release date, and
+available production images. Scene images can serve as cover and screenshot artwork and are
+cached for offline use.
+
+### Edit and browse metadata offline
+
+- Edit title, studio/developer, publisher, release date, category, genre, rating,
+  description, and scene information.
+- Display publisher and studio logos directly in the collection.
+- Prefer color logos and share centrally cached company logos between titles.
+- Use a screenshot as the list thumbnail when no cover is available.
+- Double-click an entry to edit its metadata or artwork to open it in the registered viewer.
+
+### Create and extract ADF images
+
+- Create standard **880 KiB FFS data ADFs** (`DOS\1`) from folders or suitable archives.
+- Create **OFS A500 boot ADFs** (`DOS\0`) for compatible AmigaDOS Hunk executables.
+- Configure Kickstart 1.3, 2.0, or 3.1 and 1–8 MiB RAM as the target A500 profile.
+- Extract embedded 901,120-byte disk images from WHDLoad packages without altering them.
+- Preserve an existing destination if validation, writing, or final replacement fails.
+
+WHDLoad packages cannot be converted automatically into standalone bootable Gotek disks.
+Their `.Slave` files require a prepared WHDLoad environment. Use original bootable disk
+images when a package does not contain suitable embedded ADF data.
+
+## Downloads and first start
+
+Download [AmiDiskLab 1.0](https://github.com/gruetze-software/AmiDiskLab/releases/tag/v1.0):
+
+| Platform | Package |
+| --- | --- |
+| Windows x64 | [AmiDiskLab-Windows-x64.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.0/AmiDiskLab-Windows-x64.zip) |
+| Linux x64 | [AmiDiskLab-Linux-x64.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.0/AmiDiskLab-Linux-x64.tar.gz) |
+| macOS Apple Silicon | [AmiDiskLab-macOS-Apple-Silicon.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.0/AmiDiskLab-macOS-Apple-Silicon.tar.gz) |
+| macOS Intel | [AmiDiskLab-macOS-Intel.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.0/AmiDiskLab-macOS-Intel.tar.gz) |
+
+On Linux, mark the extracted application as executable if necessary:
+
+```bash
+chmod +x AmiDiskLab
+./AmiDiskLab
+```
+
+The macOS application bundles are currently unsigned. On first launch, macOS may require
+you to Control-click **AmiDiskLab.app**, select **Open**, and confirm the security prompt.
+
+## Metadata and local files
+
+AmiDiskLab does not modify scanned software files. Its catalog, preferences, and cached
+media are stored in the current user's application-data folder. Moving or renaming a scanned
+file currently requires its metadata association to be created again.
+
+Online searches only run when explicitly selected from the context menu. ScreenScraper
+lookups send hashes, file size, filename, and optional personal account credentials through
+the protected proxy. Demozoo searches send the entered title, production ID, or link.
+
+## Safety notes
+
+- Keep backups of valuable disk images and test generated ADFs in an emulator or from a
+  separate copy before relying on them on original hardware.
+- Archive extraction rejects absolute paths, directory traversal, unsafe path components,
+  conflicting names, and overwriting existing files.
+- ADF creation rejects targets inside the source tree and validates capacity before writing.
+- A temporary output is completed before it replaces the requested destination.
+- Compatibility with a selected Kickstart version, CPU, RAM configuration, Gotek firmware,
+  or original hardware cannot be guaranteed automatically.
+
+## Build from source
+
+Development requires the .NET 10 SDK:
 
 ```powershell
 dotnet restore AmiDiskLab.slnx
@@ -34,225 +147,30 @@ dotnet test AmiDiskLab.slnx --blame-hang-timeout 60s
 dotnet run --project RetroDisk.App/AmiDiskLab.App.csproj
 ```
 
-Die Tests verwenden ausschließlich eindeutig benannte temporäre Verzeichnisse.
-Es werden keine festen Dateien auf dem Desktop erzeugt oder überschrieben.
-Der Workflow unter `.github/workflows/build.yml` ist für Windows und Linux
-vorbereitet; er wird erst nach Bereitstellung des Repositorys auf GitHub ausgeführt.
+Project structure:
 
-## Aufbau
+- **AmiDiskLab.Core** — models and service interfaces
+- **AmiDiskLab.Infrastructure** — scanning, archive handling, metadata clients, and ADF writing
+- **AmiDiskLab.App** — Avalonia desktop UI and local stores
+- **AmiDiskLab.Tests** — synthetic archive, writer, safety, metadata, and workflow tests
 
-- **Core:** Modelle und Schnittstellen für Scan, Extraktion, Writer und Konvertierung.
-- **Infrastructure:** Dateisystemzugriffe, LHA-Adapter, Hst.Amiga-Writer und Ablauf
-  „Archiv zu ADF“. Der Ablauf besitzt und bereinigt seinen temporären Quellordner.
-- **App:** Dialoge und darstellbarer Zustand. Die Abhängigkeiten werden in
-  `App.axaml.cs` zusammengesetzt und dem ViewModel übergeben.
-- **Tests:** Inhaltsvergleiche nach erneutem Mounten, Grenzgrößen, Pfadschutz,
-  Fehler-/Abbruchbehandlung, Dubletten und ViewModel-Zustände.
+GitHub Actions builds and tests every push on Windows and Linux. Tags beginning with `v`
+create self-contained release packages for all four supported targets.
 
-## A500 mit Kickstart 1.3 und Gotek
+## Online services
 
-1. Über die Zielsystem-Schaltfläche Kickstart (1.3, 2.0 oder 3.1) und RAM
-   (1, 2, 4 oder 8 MiB) des A500 einstellen. Die Auswahl wird im Benutzerprofil
-   gespeichert. Der Prozessor bleibt für dieses A500-Profil ein Motorola 68000.
-2. Einen Ordner mit einem LHA-Archiv auswählen und das Archiv in der Liste markieren.
-3. **Create A500 Boot ADF** wählen und einen Volume-Namen sowie den Speicherort
-   für das neue ADF festlegen.
-4. Das erstellte ADF auf den USB-Stick des Gotek übertragen und dort auswählen.
+AmiDiskLab uses these services only for the features described above:
 
-Der Bootexport funktioniert für Archive mit genau einem erkennbaren AmigaDOS-Hunk-
-Programm, das sich mit dem Programmpfad aus `S/Startup-Sequence` starten lässt.
-Er schreibt den Standard-DOS-Bootblock, OFS (`DOS\0`) und ein Startskript.
-Falls bereits ein Startskript vorhanden ist, wird es nicht überschrieben.
-Das Programm selbst muss mit Kickstart 1.3, 68000 und dem vorhandenen RAM
-kompatibel sein. Der Export kann diese Laufzeitvoraussetzungen nicht beweisen.
-Eine Prüfung auf echter Hardware oder einem passend konfigurierten Emulator steht
-noch aus.
+- [ScreenScraper.fr](https://www.screenscraper.fr) — game metadata and media
+- [Demozoo](https://demozoo.org) — Amiga scene production metadata
+- [Cloudflare Workers](https://workers.cloudflare.com) — protected ScreenScraper proxy hosting
+- [Wikimedia Commons](https://commons.wikimedia.org) and Wikipedia — fallback company logos
 
-Ein Archiv mit einer `.Slave`-Datei ist eine WHDLoad-Installation. WHDLoad
-benötigt mindestens Kickstart 2.0. Auch mit entsprechend umgeschaltetem A500
-entsteht aus einem solchen Paket durch Hinzufügen eines Bootblocks noch keine
-startbare Gotek-Diskette: Der Slave benötigt eine WHDLoad-Umgebung und kann
-nicht direkt aus der AmigaDOS-Startup-Sequence gestartet werden. Dafür wird ein
-originales, bereits bootfähiges ADF der Diskettenversion benötigt; dieses kann direkt auf dem
-Gotek verwendet werden. AmiDiskLab erzeugt es nicht aus der WHDLoad-Installation.
-Andere NDOS-Spielarchive ohne AmigaDOS-Programm können ebenfalls nicht
-automatisch in einen DOS-Bootdatenträger umgewandelt werden.
+AmiDiskLab is an independent project and is not affiliated with or endorsed by these
+services or by the owners of the Amiga trademarks.
 
-Für WHDLoad-Archive mit eingebetteten Diskettenabbildern gibt es **Extract disk
-ADFs**. Die Funktion übernimmt Dateien mit Diskettennamen (`Disk.1`, `Disk.2`
-usw. oder `.adf`) und exakt 901.120 Byte unverändert als separate ADFs in
-einen gewählten Ordner. Vorhandene Dateien werden nicht überschrieben. Dies ist
-ein Export der vorhandenen Bytes, keine Rekonstruktion oder Startgarantie:
-WHDLoad-Diskettenabbilder können verändert sein, und Mehrdiskettenspiele
-benötigen alle zugehörigen Images. Die Kompatibilität mit dem Zielsystem muss
-anschließend am Gotek oder in einem passenden Emulator geprüft werden.
+## License
 
-Die historischen Verzeichnisnamen `RetroDisk.*` bleiben vorerst erhalten.
-Assemblynamen und Namespaces lauten `AmiDiskLab.*`.
-
-AmiDiskLab merkt sich den zuletzt erfolgreich gewählten Ordner unter
-`%APPDATA%\AmiDiskLab\last-folder.json` und scannt ihn beim nächsten Start
-automatisch, sofern er noch vorhanden ist. Die Liste ist nach dem Scan
-alphabetisch nach angezeigtem Namen sortiert. Ein Klick auf einen Spaltenkopf
-sortiert nach dieser Spalte; erneutes Klicken kehrt die Richtung um.
-
-## Software-Metadaten
-
-Mehrteilige Disketten-Sets mit gleichem Spielnamen und Kennungen wie `(A)` bis
-`(F)` oder `(Disk 1 of 3)` bis `(Disk 3 of 3)` im selben Ordner erscheinen als
-ein Eintrag mit
-Diskettenanzahl. Die Dateien bleiben einzeln auf dem Datenträger; Metadaten
-werden für alle Disketten des Sets gespeichert. Ein Doppelklick auf den Eintrag
-öffnet den Metadatendialog. Das Rechtsklickmenü der Liste enthält Metadaten-
-und ADF-Aktionen sowie **Show Cover**, **Show Screenshot** und **Open Path**.
-Die Bildaktionen öffnen lokal gespeicherte Bilder mit der registrierten App;
-**Open Path** markiert bei einem einzelnen Eintrag die Datei im Windows-Explorer;
-bei einem Disketten-Set öffnet es den gemeinsamen Ordner. Ein Doppelklick auf Cover oder
-Screenshot im Metadatendialog öffnet die Bilddatei ebenfalls mit der
-registrierten App.
-
-Eine Datei in der Liste auswählen und im Kontextmenü **Edit metadata** öffnen. Für LHA-Archive
-wird dabei die enthaltene `ReadMe` gelesen und, soweit eindeutig, ein Titel,
-ein Studio/Publisher und die Kategorie Game, Demo oder Program vorgeschlagen.
-Die Vorschläge müssen vor dem Speichern geprüft werden: Eine WHDLoad-ReadMe
-kann auch den Autor des Installers nennen. Für ADFs nutzt AmiDiskLab zuerst
-eine passende `.rp9`-Begleitdatei (Titel, Typ und Publisher/Developer); ohne
-RP9 werden Titel, Studio und Demo/Game-Kategorie vorsichtig aus strukturierten
-Dateinamen vorgeschlagen. Der Dialog zeigt die Quelle an. Weitere Kategorien
-sowie Titel und Studio lassen sich manuell setzen. Für HFE, DMS und IPF erfolgt
-die Eingabe derzeit manuell.
-
-Die Angaben werden unter `%APPDATA%\AmiDiskLab\metadata.json` anhand des
-vollständigen Dateipfads gespeichert. Die ROMs und ihre Ordner bleiben
-unverändert. Nach Verschieben oder Umbenennen einer Datei muss ihre Zuordnung
-derzeit neu erfasst werden.
-
-Für einen ausgewählten ADF-Eintrag kann **Find game metadata (ScreenScraper.fr)** einen gezielten
-Online-Abgleich ausführen. AmiDiskLab verwendet dafür den von Grütze-Software
-betriebenen ScreenScraper-Proxy. Unter **Settings → ScreenScraper** können optional
-die persönliche ScreenScraper-Benutzer-ID und das Benutzerpasswort eingegeben werden. AmiDiskLab
-speichert diese beiden Angaben mit Windows-DPAPI für das aktuelle Benutzerkonto
-verschlüsselt unter `%APPDATA%\AmiDiskLab\screenscraper-credentials.dat` und
-lädt sie beim nächsten Start automatisch. Werden beide Felder geleert und
-gespeichert, entfernt AmiDiskLab diese Datei. Eine persönliche ScreenScraper-Anmeldung
-ist für die Suche nicht erforderlich; sie ordnet Anfragen dem eigenen Konto und dessen
-Limits beziehungsweise Mitgliedsvorteilen zu. Unter Linux und macOS werden persönliche
-ScreenScraper-Daten nur für die laufende Sitzung verwendet und nicht gespeichert. Der
-Aufruf sendet CRC32-, MD5- und SHA-1-Hash, Dateigröße, Dateinamen und gegebenenfalls
-die persönlichen Zugangsdaten über den Proxy an die ScreenScraper-API; die ADF-Datei
-selbst wird nicht hochgeladen. Die ScreenScraper-Entwicklerdaten liegen ausschließlich
-als verschlüsselte Geheimnisse beim Proxy und werden nicht mit AmiDiskLab ausgeliefert. Zusätzlich
-werden über den bereinigten Dateinamen alternative Spiele gesucht. Bei einem
-erfolglosen Hash-Abgleich entfernt die Namenssuche Klammerzusätze wie
-Jahr, Hersteller und Diskettennummer; beispielsweise wird
-`Puggsy (1994)(Psygnosis)(Disk 4 of 4)` als `Puggsy` gesucht. Bleibt ein
-vollständiger Titel mit einem durch ` - ` getrennten Untertitel ohne Ergebnis,
-wird zusätzlich der Haupttitel versucht. Eine abschließende Zahl wie bei
-`Rainbow Islands - The Story of Bubble Bobble 2` bleibt dabei erhalten. Die Treffer
-erscheinen in einer Auswahlliste: Ein SHA-1- und Größen-Treffer steht zuerst;
-Namensfunde sind ausdrücklich als nicht hashverifiziert markiert. Erst nach
-Auswahl, Prüfung und **Save** werden Daten in den lokalen Katalog übernommen.
-Ohne Online-Treffer bleiben RP9-, ReadMe- und Dateinamen-Vorschläge verfügbar.
-Online-Abfragen erfolgen nur auf ausdrücklichen Klick, nicht beim Ordnerscan.
-Bei einem Treffer werden regionale Titel, Veröffentlichungsdatum, Entwickler,
-Publisher, Publisher-Logo, Genre, Beschreibung sowie Cover und Spiel-Screenshot übernommen, soweit
-vorhanden. Beide Bilder werden im Dialog angezeigt und unter
-`%APPDATA%\AmiDiskLab\covers` lokal gespeichert. Der Proxy ersetzt API-Medienlinks
-durch kurzlebige, verschlüsselte Download-Links; Entwicklerdaten gelangen dadurch
-nicht in den Metadatenkatalog. Der Metadatendialog öffnet sofort nach der Trefferauswahl
-und zeigt den Download mit Wartemauszeiger an. Anschließend werden die Links in
-lokale Dateipfade umgewandelt.
-Beim Speichern prüft die App,
-dass alle eingetragenen Bilder heruntergeladen wurden; danach sind sie auch
-offline im Metadatendialog verfügbar. Fehlt der Titel oder das Datum in der API-Antwort, wird
-dafür ein klar gekennzeichneter Vorschlag aus dem Dateinamen verwendet.
-
-Für Szene-Demos gibt es im Rechtsklickmenü **Find scene metadata (Demozoo)**.
-Die Suche schlägt einen aus dem Dateinamen bereinigten Titel vor; der Suchname
-kann vor dem Abgleich geändert werden. Alternativ kann man die numerische
-Demozoo-Produktions-ID oder einen Demozoo-Produktionslink eingeben. Demozoo liefert nur exakte Titeltreffer,
-die auf Amiga-Plattformen gefiltert und bei mehreren Ergebnissen zur Auswahl
-angezeigt werden. Titel, Scene-Gruppe, Produktionstyp, Erscheinungsdatum und
-vorhandene Szenebilder werden als überprüfbarer Vorschlag übernommen. Das erste
-Bild dient als Cover-Ersatz, ein zweites als Screenshot. Gibt es nur ein Bild,
-wird es an beiden Stellen angezeigt. Die Bilder werden für die Offline-Nutzung
-lokal gespeichert. Bei bereits gespeicherten Demozoo-Einträgen kann ein
-vorhandener Screenshot beim nächsten Öffnen des Metadatendialogs ebenfalls als
-Cover-Ersatz übernommen werden.
-Ein Dateihash wird hierbei nicht verifiziert; die Originaldatei bleibt unverändert.
-
-Die ADF-Funktionen liegen im Rechtsklick-Untermenü **ADF actions**. Kickstart/RAM und
-ScreenScraper-Zugang werden gemeinsam unter **Settings** mit getrennten Reitern
-bearbeitet. Dort lassen sich auch die bevorzugte Sprache für Beschreibungen
-und die Region für Titel, Erscheinungsdaten und Cover wählen. Falls ein Eintrag
-in der gewählten Sprache oder Region fehlt, wird ein verfügbarer Ersatz
-verwendet. Zielplattform und Metadatenpräferenzen werden dauerhaft gespeichert;
-API-Zugangsdaten werden für das aktuelle Windows-Benutzerkonto verschlüsselt
-gespeichert.
-
-Das Genre kann im Metadatendialog manuell bearbeitet werden und erscheint als
-eigene sortierbare Spalte in der Hauptliste.
-Der Publisher wird ebenfalls in einer sortierbaren Spalte angezeigt. Liefert
-ScreenScraper ein farbiges oder monochromes Publisher-Logo, wird es offline
-gespeichert und im Metadatendialog sowie in der Publisher-Spalte angezeigt.
-Enthält die Spielantwort nur die ScreenScraper-Firmen-ID, lädt AmiDiskLab das
-farbige Logo über `mediaCompagnie.php` nach und verwendet nur bei fehlender
-Farbversion das monochrome Logo. Ein heller Hintergrund hält transparente,
-dunkle Logos auch im Dark Theme lesbar.
-Duplikate besitzen keine eigene Spalte mehr; ihre komplette Zeile erscheint rot.
-
-## Sicherheits- und Verhaltensregeln
-
-- Alle drei Writer-Einstiegspunkte verwenden Hst.Amiga 0.6.238.
-- Das Image wird zunächst in einem festen 901.120-Byte-Puffer aufgebaut.
-  Erst nach erfolgreichem Schreiben, Flush und Schließen wird eine temporäre
-  Datei neben dem Ziel geschrieben und anschließend an die Zielposition verschoben.
-  Abbruch oder Schreibfehler vor dem Ersetzen erhalten die vorhandene Zieldatei.
-  Dies ist keine Garantie gegen Stromausfall oder konkurrierende externe Dateizugriffe.
-- Der Writer lehnt Ziele innerhalb des Quellbaums sowie symbolische Links und
-  Junctions in den verwendeten Quell-/Zielpfaden ab. Die Linkprüfung ist kein
-  Schutz gegen einen gleichzeitig durch einen anderen Prozess ausgetauschten Pfad.
-- Datei- und Volume-Namen: 1–30 Latin-1-Zeichen, ohne Steuerzeichen, `/`, `\` oder `:`.
-  DOS\1-Namenskollisionen werden vorab abgelehnt.
-- Die Kapazitätsprüfung berücksichtigt Daten-, Header-, Verzeichnis- und
-  Erweiterungsblöcke. Sie ist eine Vorprüfung; Hst.Amiga kann am Kapazitätsrand
-  zusätzlichen Arbeitsraum benötigen. Auch solche Fehler erhalten das alte Ziel.
-- Die Extraktion prüft das gesamte Manifest vor dem Schreiben und überschreibt
-  keine bestehenden Dateien. Absolute Pfade, Traversierung und problematische
-  Windows-Pfadnamen werden plattformübergreifend abgelehnt. C-String-Endnullen
-  bleiben für bestehende LHA-Dateien unterstützt.
-- Scans ignorieren Verzeichnislinks. Nicht lesbare Dateien oder Ordner führen zu
-  einem sichtbaren Scanfehler; die vorherige Ergebnisliste bleibt erhalten.
-- Es läuft höchstens ein Scan oder eine Konvertierung gleichzeitig. „Cancel“
-  fordert einen kooperativen Abbruch an. Das Schließen während eines Vorgangs
-  fordert ebenfalls Abbruch an; nach dessen Ende kann das Fenster geschlossen werden.
-
-## Diagnose eines Hängers
-
-Optional vor dem Start einen beschreibbaren Logpfad setzen, zum Beispiel:
-
-```powershell
-$env:AMIDISKLAB_LOG_PATH = Join-Path $env:TEMP 'AmiDiskLab-diagnostic.log'
-dotnet run --project RetroDisk.App/AmiDiskLab.App.csproj
-```
-
-Das Log erfasst Öffnen und Schließen von Dateien, Verzeichniswechsel,
-Volume-Flush und Volume-Schließen auch im Release-Build. „Finished“ erscheint
-nach dem Dateistream-Schließen. Das Log wird angehängt und kann lokale Pfade
-enthalten. Nach der Diagnose die Umgebungsvariable wieder entfernen.
-
-## Bewusste Grenzen und nächste Schritte
-
-- Der LHA-Decoder lädt synchron und kann während dieses Bibliotheksaufrufs nicht
-  abgebrochen werden. Er läuft außerhalb des UI-Threads. Es gibt derzeit keine
-  harte Speicher-/Dekompressionsquote für nicht vertrauenswürdige Archive.
-- Amiga-Schutzbits, Kommentare und Originalzeitstempel werden noch nicht erhalten.
-- Die automatische Prüfung nutzt Hst.Amiga auch zum Wiederöffnen. Eine unabhängige
-  Prüfung im Emulator oder auf echter Hardware steht weiterhin aus.
-- Archiv-, Writer- und WHDLoad-Prüfungen verwenden ausschließlich zur Laufzeit
-  erzeugte synthetische Testarchive. Reale Softwarearchive gehören nicht zum Repository.
-- Das früher auffällige AztecChallenge-Archiv liegt nicht als Testdatei vor; seine
-  konkrete Hängerursache ist damit noch nicht abschließend reproduziert.
-- Neue Funktionen werden separat mit Nutzen, Umfang und Abnahmekriterien festgelegt.
-  Metadatenerhalt, weitere Imageformate und Startumgebungen sind keine impliziten
-  Zusagen dieses Stabilisierungsschritts.
+AmiDiskLab source code is released under the [MIT License](LICENSE). Third-party Amiga
+software, ROMs, disk images, downloaded metadata, and media are not part of this license
+and are not included in the repository.
