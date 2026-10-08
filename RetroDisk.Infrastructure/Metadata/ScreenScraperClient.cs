@@ -13,12 +13,38 @@ using System.Text.Json;
 namespace AmiDiskLab.Infrastructure.Metadata;
 
 public sealed record ScreenScraperAccess(string UserId, string UserPassword);
+public sealed record ScreenScraperUserInfo(string? UserId, int MaxThreads, int RequestsToday,
+    int FailedRequestsToday, int MaxRequestsPerMinute, int MaxRequestsPerDay,
+    int MaxFailedRequestsPerDay)
+{
+    public int RequestsRemaining => Math.Max(0, MaxRequestsPerDay - RequestsToday);
+    public int FailedRequestsRemaining => Math.Max(0, MaxFailedRequestsPerDay - FailedRequestsToday);
+}
 
 public sealed class ScreenScraperClient(HttpClient httpClient)
 {
     public const string ProxyRoot = "https://amidisklab-api.c-schaef.workers.dev";
     private const string Endpoint = "jeuInfos.php";
     private const string SearchEndpoint = "jeuRecherche.php";
+    private readonly object _rateLock = new();
+    private readonly Queue<DateTimeOffset> _requestTimes = new();
+    private SemaphoreSlim _requestSlots = new(1, 1);
+    private int _maxRequestsPerMinute = 20;
+    public event Action<ScreenScraperUserInfo>? UserInfoUpdated;
+
+    public void ConfigureLimits(ScreenScraperUserInfo info)
+    {
+        _requestSlots = new SemaphoreSlim(Math.Max(1, info.MaxThreads), Math.Max(1, info.MaxThreads));
+        _maxRequestsPerMinute = Math.Max(1, info.MaxRequestsPerMinute);
+    }
+
+    public async Task<ScreenScraperUserInfo> GetUserInfoAsync(ScreenScraperAccess access,
+        CancellationToken cancellationToken = default)
+    {
+        var document = await GetDocumentAsync("ssuserInfos.php", BaseQuery(access), cancellationToken)
+            ?? throw new IOException("ScreenScraper did not return account information.");
+        return ParseUserInfo(document) ?? throw new IOException("ScreenScraper account information is incomplete.");
+    }
 
     public Task<IReadOnlyList<MetadataSuggestion>> SearchAdfAsync(string adfPath,
         ScreenScraperAccess access, CancellationToken cancellationToken = default) =>
@@ -155,6 +181,8 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
     private async Task<XDocument?> GetDocumentAsync(string endpoint, Dictionary<string, string> query,
         CancellationToken cancellationToken)
     {
+        await WaitForRateWindowAsync(cancellationToken);
+        await _requestSlots.WaitAsync(cancellationToken);
         var uri = ProxyRoot + "/v1/screenscraper";
         Trace.WriteLine($"[ScreenScraperProxy] POST {uri}; endpoint={endpoint}; " +
             $"parameters={RedactedParameters(query)}");
@@ -167,6 +195,8 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
             if (response.StatusCode == HttpStatusCode.NotFound) return null;
             if (response.StatusCode == HttpStatusCode.TooManyRequests)
                 throw new IOException("ScreenScraper proxy rate limit reached; try again later.");
+            if ((int)response.StatusCode == 430)
+                throw new IOException("The ScreenScraper daily request quota has been reached.");
             if (!response.IsSuccessStatusCode)
                 throw new IOException($"ScreenScraper proxy returned HTTP {(int)response.StatusCode}.");
             await using var body = await response.Content.ReadAsStreamAsync(cancellationToken);
@@ -175,7 +205,9 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
                 Async = true, DtdProcessing = DtdProcessing.Prohibit, XmlResolver = null,
                 MaxCharactersInDocument = 2_000_000
             });
-            return await XDocument.LoadAsync(reader, LoadOptions.None, cancellationToken);
+            var document = await XDocument.LoadAsync(reader, LoadOptions.None, cancellationToken);
+            if (ParseUserInfo(document) is { } info) UserInfoUpdated?.Invoke(info);
+            return document;
         }
         catch (HttpRequestException)
         { throw new IOException("ScreenScraper proxy request failed. Check the connection."); }
@@ -183,6 +215,39 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
         { throw new IOException("ScreenScraper request timed out."); }
         catch (XmlException)
         { throw new IOException("ScreenScraper proxy did not return valid XML."); }
+        finally { _requestSlots.Release(); }
+    }
+
+    private async Task WaitForRateWindowAsync(CancellationToken cancellationToken)
+    {
+        while (true)
+        {
+            TimeSpan delay;
+            lock (_rateLock)
+            {
+                var now = DateTimeOffset.UtcNow;
+                while (_requestTimes.Count > 0 && now - _requestTimes.Peek() >= TimeSpan.FromMinutes(1))
+                    _requestTimes.Dequeue();
+                if (_requestTimes.Count < _maxRequestsPerMinute)
+                {
+                    _requestTimes.Enqueue(now);
+                    return;
+                }
+                delay = TimeSpan.FromMinutes(1) - (now - _requestTimes.Peek()) + TimeSpan.FromMilliseconds(50);
+            }
+            await Task.Delay(delay, cancellationToken);
+        }
+    }
+
+    internal static ScreenScraperUserInfo? ParseUserInfo(XDocument document)
+    {
+        var user = document.Descendants().FirstOrDefault(node => node.Name.LocalName == "ssuser");
+        if (user is null) return null;
+        int Number(string name, int fallback = 0) => int.TryParse(Child(user, name), out var value) ? value : fallback;
+        return new ScreenScraperUserInfo(Child(user, "id"), Math.Max(1, Number("maxthreads", 1)),
+            Number("requeststoday"), Number("requestskotoday"),
+            Math.Max(1, Number("maxrequestspermin", Number("maxrequestsperdmin", 20))),
+            Math.Max(0, Number("maxrequestsperday")), Math.Max(0, Number("maxrequestskoperday")));
     }
 
     private static string RedactedParameters(Dictionary<string, string> query) =>

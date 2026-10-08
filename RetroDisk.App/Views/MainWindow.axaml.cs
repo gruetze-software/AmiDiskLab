@@ -257,6 +257,19 @@ public partial class MainWindow : Window
         finally { _dialogOpen = false; }
     }
 
+    private async void BatchMetadata_Click(object? sender, RoutedEventArgs e)
+    {
+        if (_dialogOpen || DataContext is not MainWindowViewModel { IsBusy: false } viewModel) return;
+        _dialogOpen = true;
+        try
+        {
+            if (viewModel.ScreenScraperAccess is null && !await ConfigureScreenScraperAsync(viewModel)) return;
+            await new BatchMetadataWindow(viewModel).ShowDialog(this);
+        }
+        catch (Exception ex) { viewModel.ReportError("Batch metadata lookup failed", ex); }
+        finally { _dialogOpen = false; }
+    }
+
     private async void Demozoo_Click(object? sender, RoutedEventArgs e)
     {
         if (_dialogOpen || DataContext is not MainWindowViewModel viewModel || !viewModel.CanLookupScene) return;

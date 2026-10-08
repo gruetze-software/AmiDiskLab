@@ -3,6 +3,8 @@
 This Cloudflare Worker keeps the AmiDiskLab ScreenScraper developer credentials
 outside the desktop application. It accepts only a fixed set of ScreenScraper
 operations and replaces media URLs with short-lived encrypted proxy URLs.
+The allow-list includes `ssuserInfos.php` so the desktop client can validate an
+optional user account and obey its thread and request quotas.
 
 ## Dashboard deployment
 

@@ -201,6 +201,20 @@ public partial class MainWindowViewModel(IRetroSoftwareScanner scanner, IArchive
         StatusText = $"Metadata saved: {item.FileName}";
     }
 
+    public void SaveBatchMetadata(RetroSoftwareItem item, SoftwareMetadata metadata)
+    {
+        _metadataStore.SetMany(item.AllPaths, metadata);
+        item.SetMetadata(metadata);
+    }
+
+    public void FinishBatchMetadata(string status)
+    {
+        ApplySort();
+        OnPropertyChanged(nameof(CanShowCover));
+        OnPropertyChanged(nameof(CanShowScreenshot));
+        StatusText = status;
+    }
+
     public void Cancel()
     {
         if (_operation is null) return;

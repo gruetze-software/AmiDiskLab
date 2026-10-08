@@ -59,6 +59,8 @@ count and stores shared metadata for the complete set.
 - publisher and developer/studio information
 - ratings, cover art, screenshots, and company logos
 - multiple-result selection when a search is ambiguous
+- collection-wide batch enrichment with account-aware parallel requests, quota monitoring,
+  automatic saving of exact hash matches, and a live activity log
 
 Cover art, screenshots, and logos are cached locally for offline use. A personal
 ScreenScraper account is optional. On Windows, optional personal credentials are encrypted

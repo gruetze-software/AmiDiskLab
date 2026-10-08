@@ -14,6 +14,23 @@ namespace AmiDiskLab.Tests;
 public class MetadataTests
 {
     [Fact]
+    public void ScreenScraperUserQuotaIsParsedFromApiEnvelope()
+    {
+        var document = System.Xml.Linq.XDocument.Parse("""
+            <Data><ssuser><id>collector</id><maxthreads>4</maxthreads>
+            <requeststoday>123</requeststoday><requestskotoday>7</requestskotoday>
+            <maxrequestspermin>60</maxrequestspermin><maxrequestsperday>20000</maxrequestsperday>
+            <maxrequestskoperday>1000</maxrequestskoperday></ssuser></Data>
+            """);
+        var info = ScreenScraperClient.ParseUserInfo(document);
+        Assert.NotNull(info);
+        Assert.Equal("collector", info.UserId);
+        Assert.Equal(4, info.MaxThreads);
+        Assert.Equal(19877, info.RequestsRemaining);
+        Assert.Equal(993, info.FailedRequestsRemaining);
+    }
+
+    [Fact]
     public async Task SyntheticReadmeSuggestsGameTitleAndStudio()
     {
         using var folder = new TestFolder();
