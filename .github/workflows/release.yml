@@ -120,4 +120,5 @@ jobs:
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: gh release create "$GITHUB_REF_NAME" release-assets/* --verify-tag --generate-notes --title "AmiDiskLab ${GITHUB_REF_NAME#v}"
