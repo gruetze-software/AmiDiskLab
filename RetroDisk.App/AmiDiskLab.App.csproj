@@ -4,11 +4,14 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\AmiDiskLab.ico</ApplicationIcon>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 		<RootNamespace>AmiDiskLab.App</RootNamespace>
 		<AssemblyName>AmiDiskLab</AssemblyName>
 		<Product>AmiDiskLab</Product>
-		<Title>AmiDiskLab</Title>
+		<Title>AmiDiskLab - Amiga Disk &amp; Software Manager</Title>
+		<AssemblyTitle>AmiDiskLab - Amiga Disk &amp; Software Manager</AssemblyTitle>
 		<Description>Amiga Disk &amp; Software Manager</Description>
 		<Authors>Christoph Schaefer</Authors>
 		<Company>Grütze-Software</Company>

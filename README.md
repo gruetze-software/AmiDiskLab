@@ -115,6 +115,10 @@ chmod +x AmiDiskLab
 ./AmiDiskLab
 ```
 
+The Linux archive also contains the application logo and `install-user.sh`. Run the script
+to add AmiDiskLab to the current user's desktop application menu; `uninstall-user.sh`
+removes that integration again.
+
 The macOS application bundles are currently unsigned. On first launch, macOS may require
 you to Control-click **AmiDiskLab.app**, select **Open**, and confirm the security prompt.
 

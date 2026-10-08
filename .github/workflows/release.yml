@@ -67,6 +67,9 @@ jobs:
         shell: bash
         run: |
           chmod +x publish/AmiDiskLab
+          cp AmiDiskLab_256.png publish/AmiDiskLab.png
+          cp packaging/linux/install-user.sh packaging/linux/uninstall-user.sh publish/
+          chmod +x publish/install-user.sh publish/uninstall-user.sh
           tar -C publish -czf '${{ matrix.artifact }}.tar.gz' .
       - name: Create macOS application bundle
         if: runner.os == 'macOS'
@@ -96,8 +99,12 @@ jobs:
             <key>CFBundleIdentifier</key><string>de.gruetze-software.amidisklab</string>
             <key>CFBundleVersion</key><string>$VERSION</string>
             <key>CFBundleShortVersionString</key><string>$VERSION</string>
+            <key>CFBundleGetInfoString</key><string>AmiDiskLab $VERSION — Amiga Disk &amp; Software Manager</string>
             <key>CFBundleExecutable</key><string>AmiDiskLab</string>
             <key>CFBundleIconFile</key><string>AmiDiskLab</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>LSApplicationCategoryType</key><string>public.app-category.utilities</string>
+            <key>NSHumanReadableCopyright</key><string>Copyright © 2026 Christoph Schaefer / Grütze-Software</string>
             <key>NSHighResolutionCapable</key><true/>
           </dict></plist>
           PLIST
