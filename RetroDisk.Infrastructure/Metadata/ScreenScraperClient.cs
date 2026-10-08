@@ -19,6 +19,7 @@ public sealed record ScreenScraperUserInfo(string? UserId, int MaxThreads, int R
 {
     public int RequestsRemaining => Math.Max(0, MaxRequestsPerDay - RequestsToday);
     public int FailedRequestsRemaining => Math.Max(0, MaxFailedRequestsPerDay - FailedRequestsToday);
+    public bool HasDailyQuota => MaxRequestsPerDay > 0;
 }
 
 public sealed class ScreenScraperClient(HttpClient httpClient)
@@ -41,9 +42,12 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
     public async Task<ScreenScraperUserInfo> GetUserInfoAsync(ScreenScraperAccess access,
         CancellationToken cancellationToken = default)
     {
-        var document = await GetDocumentAsync("ssuserInfos.php", BaseQuery(access), cancellationToken)
+        var personal = !string.IsNullOrWhiteSpace(access.UserId) && !string.IsNullOrEmpty(access.UserPassword);
+        var document = await GetDocumentAsync(personal ? "ssuserInfos.php" : "ssinfraInfos.php",
+                BaseQuery(access), cancellationToken)
             ?? throw new IOException("ScreenScraper did not return account information.");
-        return ParseUserInfo(document) ?? throw new IOException("ScreenScraper account information is incomplete.");
+        return ParseUserInfo(document) ?? ParseAnonymousInfo(document) ??
+            throw new IOException("ScreenScraper account information is incomplete.");
     }
 
     public Task<IReadOnlyList<MetadataSuggestion>> SearchAdfAsync(string adfPath,
@@ -248,6 +252,15 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
             Number("requeststoday"), Number("requestskotoday"),
             Math.Max(1, Number("maxrequestspermin", Number("maxrequestsperdmin", 20))),
             Math.Max(0, Number("maxrequestsperday")), Math.Max(0, Number("maxrequestskoperday")));
+    }
+
+    internal static ScreenScraperUserInfo? ParseAnonymousInfo(XDocument document)
+    {
+        var available = document.Descendants().Any(node =>
+            node.Name.LocalName == "maxthreadfornonmember");
+        if (!available) return null;
+        // This API value is the global anonymous pool, not a per-user allowance.
+        return new ScreenScraperUserInfo(null, 1, 0, 0, 20, 0, 0);
     }
 
     private static string RedactedParameters(Dictionary<string, string> query) =>

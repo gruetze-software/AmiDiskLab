@@ -1,5 +1,5 @@
 const API_ROOT = "https://api.screenscraper.fr/api2/";
-const ALLOWED_XML_ENDPOINTS = new Set(["jeuInfos.php", "jeuRecherche.php", "ssuserInfos.php"]);
+const ALLOWED_XML_ENDPOINTS = new Set(["jeuInfos.php", "jeuRecherche.php", "ssuserInfos.php", "ssinfraInfos.php"]);
 const ALLOWED_MEDIA_ENDPOINTS = new Set(["mediaJeu.php", "mediaCompagnie.php"]);
 const ALLOWED_PARAMETER_NAMES = new Set([
   "crc", "md5", "sha1", "romnom", "romtaille", "romtype", "systemeid",

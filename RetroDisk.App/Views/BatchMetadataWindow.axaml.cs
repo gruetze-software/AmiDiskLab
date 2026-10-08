@@ -43,7 +43,9 @@ public partial class BatchMetadataWindow : Window
             _total = items.Length;
             Progress.Maximum = Math.Max(1, _total);
             ProcessedText.Text = $"0 / {items.Length}";
-            AddLog($"Started with {info.MaxThreads} parallel ScreenScraper thread(s); {info.RequestsRemaining:N0} requests remaining today.");
+            AddLog(info.HasDailyQuota
+                ? $"Started with {info.MaxThreads} parallel ScreenScraper thread(s); {info.RequestsRemaining:N0} requests remaining today."
+                : $"Started anonymously with {info.MaxThreads} parallel ScreenScraper thread(s); no personal daily quota reported.");
             await Parallel.ForEachAsync(items, new ParallelOptions
             {
                 MaxDegreeOfParallelism = Math.Max(1, info.MaxThreads),
@@ -104,8 +106,10 @@ public partial class BatchMetadataWindow : Window
 
     private void ShowAccount(ScreenScraperUserInfo info) => AccountText.Text =
         $"Account: {info.UserId ?? "anonymous"} · {info.MaxThreads} thread(s) · " +
-        $"{info.RequestsToday:N0} / {info.MaxRequestsPerDay:N0} requests today · " +
-        $"{info.FailedRequestsToday:N0} / {info.MaxFailedRequestsPerDay:N0} failed";
+        (info.HasDailyQuota
+            ? $"{info.RequestsToday:N0} / {info.MaxRequestsPerDay:N0} requests today · " +
+              $"{info.FailedRequestsToday:N0} / {info.MaxFailedRequestsPerDay:N0} failed"
+            : "daily personal quota not reported");
 
     private void UpdateCounters()
     {

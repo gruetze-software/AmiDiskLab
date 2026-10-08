@@ -31,6 +31,18 @@ public class MetadataTests
     }
 
     [Fact]
+    public void AnonymousScreenScraperThreadLimitIsParsedFromInfrastructureEnvelope()
+    {
+        var document = System.Xml.Linq.XDocument.Parse(
+            "<Data><quota><maxthreadfornonmember>2</maxthreadfornonmember></quota></Data>");
+        var info = ScreenScraperClient.ParseAnonymousInfo(document);
+        Assert.NotNull(info);
+        Assert.Null(info.UserId);
+        Assert.Equal(1, info.MaxThreads);
+        Assert.False(info.HasDailyQuota);
+    }
+
+    [Fact]
     public async Task SyntheticReadmeSuggestsGameTitleAndStudio()
     {
         using var folder = new TestFolder();
