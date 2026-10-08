@@ -48,9 +48,15 @@ public partial class BatchMetadataWindow : Window
                 : $"Started anonymously with {info.MaxThreads} parallel ScreenScraper thread(s); no personal daily quota reported.");
             await Parallel.ForEachAsync(items, new ParallelOptions
             {
-                MaxDegreeOfParallelism = Math.Max(1, info.MaxThreads),
-                CancellationToken = _cancellation.Token
+                MaxDegreeOfParallelism = Math.Max(1, info.MaxThreads)
             }, async (item, token) => await ProcessAsync(client, access, item, items.Length, token));
+            if (_cancellation.IsCancellationRequested)
+            {
+                AddLog("Cancelled. Already saved metadata remains available.");
+                SummaryText.Text = "Cancelled safely.";
+                _viewModel.FinishBatchMetadata(SummaryText.Text);
+                return;
+            }
             SummaryText.Text = $"Completed: {_saved} saved, {_review} need review, {_miss} without an exact match.";
             _viewModel.FinishBatchMetadata(SummaryText.Text);
         }
@@ -62,11 +68,14 @@ public partial class BatchMetadataWindow : Window
     private async ValueTask ProcessAsync(ScreenScraperClient client, ScreenScraperAccess access,
         RetroSoftwareItem item, int total, CancellationToken token)
     {
+        token = _cancellation.Token;
+        if (token.IsCancellationRequested) return;
         await Dispatcher.UIThread.InvokeAsync(() => CurrentText.Text = item.DisplayTitle);
         try
         {
             var matches = await client.SearchAdfAsync(item.FullPath, access,
                 _viewModel.ScreenScraperPreferences, token);
+            if (token.IsCancellationRequested) return;
             var exact = matches.FirstOrDefault(match => match.Source.Contains("exact SHA-1", StringComparison.Ordinal));
             if (exact is null)
             {
@@ -81,7 +90,8 @@ public partial class BatchMetadataWindow : Window
                 AddLog($"SAVED   {item.DisplayTitle} -> {metadata.Title}");
             }
         }
-        catch (OperationCanceledException) { throw; }
+        catch (OperationCanceledException) when (token.IsCancellationRequested)
+        { AddLog($"CANCEL  {item.DisplayTitle}"); }
         catch (Exception ex) { Interlocked.Increment(ref _miss); AddLog($"ERROR   {item.DisplayTitle}: {ex.Message}"); }
         finally
         {

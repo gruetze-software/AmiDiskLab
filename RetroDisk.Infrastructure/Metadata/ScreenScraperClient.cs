@@ -185,13 +185,15 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
     private async Task<XDocument?> GetDocumentAsync(string endpoint, Dictionary<string, string> query,
         CancellationToken cancellationToken)
     {
-        await WaitForRateWindowAsync(cancellationToken);
-        await _requestSlots.WaitAsync(cancellationToken);
+        var slotAcquired = false;
         var uri = ProxyRoot + "/v1/screenscraper";
         Trace.WriteLine($"[ScreenScraperProxy] POST {uri}; endpoint={endpoint}; " +
             $"parameters={RedactedParameters(query)}");
         try
         {
+            await WaitForRateWindowAsync(cancellationToken);
+            await _requestSlots.WaitAsync(cancellationToken);
+            slotAcquired = true;
             using var response = await httpClient.PostAsJsonAsync(uri,
                 new Dictionary<string, object> { ["endpoint"] = endpoint, ["parameters"] = query },
                 cancellationToken);
@@ -215,11 +217,16 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
         }
         catch (HttpRequestException)
         { throw new IOException("ScreenScraper proxy request failed. Check the connection."); }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            Trace.WriteLine("[ScreenScraperProxy] Request cancelled by user.");
+            return null;
+        }
         catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
         { throw new IOException("ScreenScraper request timed out."); }
         catch (XmlException)
         { throw new IOException("ScreenScraper proxy did not return valid XML."); }
-        finally { _requestSlots.Release(); }
+        finally { if (slotAcquired) _requestSlots.Release(); }
     }
 
     private async Task WaitForRateWindowAsync(CancellationToken cancellationToken)
