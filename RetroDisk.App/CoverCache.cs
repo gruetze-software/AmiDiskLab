@@ -26,16 +26,9 @@ internal static class CoverCache
 
     public static async Task<string?> CacheAsync(string? url)
     {
-        if (string.IsNullOrWhiteSpace(url)) return null;
-        if (Path.IsPathFullyQualified(url))
-        {
-            var local = Path.GetFullPath(url);
-            var hit = local.StartsWith(Path.GetFullPath(Folder) + Path.DirectorySeparatorChar,
-                    StringComparison.OrdinalIgnoreCase) && File.Exists(local)
-                ? EnsureImageExtension(local) : null;
-            Trace.WriteLine($"[MediaCache] Local {(hit is null ? "miss" : "hit")}: {local}");
-            return hit;
-        }
+        var cachedPath = FindCached(url);
+        if (cachedPath is not null) return cachedPath;
+        if (string.IsNullOrWhiteSpace(url) || Path.IsPathFullyQualified(url)) return null;
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps ||
             !(uri.Host.Equals("screenscraper.fr", StringComparison.OrdinalIgnoreCase) ||
               uri.Host.EndsWith(".screenscraper.fr", StringComparison.OrdinalIgnoreCase) ||
@@ -44,18 +37,8 @@ internal static class CoverCache
               uri.Host.EndsWith(".demozoo.org", StringComparison.OrdinalIgnoreCase) ||
               uri.Host.Equals("commons.wikimedia.org", StringComparison.OrdinalIgnoreCase) ||
               uri.Host.Equals("upload.wikimedia.org", StringComparison.OrdinalIgnoreCase))) return null;
-        var name = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(url!))) + ".img";
-        var legacyPath = Path.Combine(Folder, name);
+        var legacyPath = CachePath(url);
         var basePath = Path.ChangeExtension(legacyPath, null);
-        foreach (var extension in new[] { ".png", ".jpg", ".webp", ".gif", ".img" })
-        {
-            var cached = basePath + extension;
-            if (File.Exists(cached))
-            {
-                Trace.WriteLine($"[MediaCache] Cache hit for {Redact(uri)} -> {cached}");
-                return EnsureImageExtension(cached);
-            }
-        }
         HttpResponseMessage response;
         Trace.WriteLine($"[MediaCache] GET {Redact(uri)}");
         try { response = await Http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead); }
@@ -105,6 +88,34 @@ internal static class CoverCache
             return path;
         }
     }
+
+    public static string? FindCached(string? reference)
+    {
+        if (string.IsNullOrWhiteSpace(reference)) return null;
+        if (Path.IsPathFullyQualified(reference))
+        {
+            var local = Path.GetFullPath(reference);
+            var hit = local.StartsWith(Path.GetFullPath(Folder) + Path.DirectorySeparatorChar,
+                    StringComparison.OrdinalIgnoreCase) && File.Exists(local)
+                ? EnsureImageExtension(local) : null;
+            Trace.WriteLine($"[MediaCache] Local {(hit is null ? "miss" : "hit")}: {local}");
+            return hit;
+        }
+        if (!Uri.TryCreate(reference, UriKind.Absolute, out var uri)) return null;
+        var basePath = Path.ChangeExtension(CachePath(reference), null);
+        foreach (var extension in new[] { ".png", ".jpg", ".webp", ".gif", ".img" })
+        {
+            var cached = basePath + extension;
+            if (!File.Exists(cached)) continue;
+            Trace.WriteLine($"[MediaCache] Cache hit for {Redact(uri)} -> {cached}");
+            return EnsureImageExtension(cached);
+        }
+        Trace.WriteLine($"[MediaCache] Cache miss for {Redact(uri)}");
+        return null;
+    }
+
+    private static string CachePath(string reference) => Path.Combine(Folder,
+        Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(reference))) + ".img");
 
     private static string Redact(Uri uri)
     {

@@ -28,6 +28,7 @@ public partial class MetadataWindow : Window
     private string? _studioForLogoRemoval;
     private bool _closed;
     private string? _sourceUrl;
+    private bool _allowOnlineMediaLookup;
     public SoftwareMetadata Metadata { get; private set; } = new();
 
     public MetadataWindow()
@@ -41,6 +42,7 @@ public partial class MetadataWindow : Window
     public MetadataWindow(RetroSoftwareItem item, MetadataSuggestion? suggestion, bool preferSuggestion = false,
         string? metadataLanguage = null) : this()
     {
+        _allowOnlineMediaLookup = preferSuggestion;
         if (!string.IsNullOrWhiteSpace(metadataLanguage)) _metadataLanguage = metadataLanguage;
         _sourceUrl = Pick(item.Metadata.SourceUrl, suggestion?.Metadata.SourceUrl, preferSuggestion);
         FileNameText.Text = item.DiskCount > 1
@@ -132,7 +134,7 @@ public partial class MetadataWindow : Window
         {
             Trace.WriteLine($"[StudioLogo] Color cache hit for '{studio}': {linked.Path}");
         }
-        else try
+        else if (_allowOnlineMediaLookup) try
         {
             StudioLogoStatus.Text = "Downloading studio logo...";
             var releaseYear = ReleaseDateBox.Text is { Length: >= 4 } date ? date[..4] : null;
@@ -173,10 +175,12 @@ public partial class MetadataWindow : Window
     {
         if (string.IsNullOrWhiteSpace(PublisherLogoUrlBox.Text) &&
             string.IsNullOrWhiteSpace(PublisherBox.Text)) return;
-        PublisherLogoStatus.Text = "Downloading publisher logo...";
+        PublisherLogoStatus.Text = _allowOnlineMediaLookup
+            ? "Downloading publisher logo..." : "Loading publisher logo from offline cache...";
         try
         {
-            var path = await CachePublisherLogoAsync(PublisherLogoUrlBox.Text, PublisherBox.Text);
+            var path = await CachePublisherLogoAsync(PublisherLogoUrlBox.Text, PublisherBox.Text,
+                _allowOnlineMediaLookup);
             if (_closed) return;
             if (path is null) throw new IOException("Publisher logo unavailable.");
             PublisherLogoUrlBox.Text = path;
@@ -193,12 +197,13 @@ public partial class MetadataWindow : Window
             if (_closed) return;
             Trace.WriteLine($"[PublisherLogo] Display failed: {ex.GetType().Name}: {ex.Message}");
             PublisherLogoUrlBox.Text = string.Empty;
-            PublisherLogoStatus.Text = "Publisher logo could not be downloaded.";
+            PublisherLogoStatus.Text = _allowOnlineMediaLookup
+                ? "Publisher logo could not be downloaded." : "No cached publisher logo available.";
         }
     }
 
     private async System.Threading.Tasks.Task<string?> CachePublisherLogoAsync(string? reference,
-        string? publisher)
+        string? publisher, bool allowOnline = true)
     {
         var isLocal = !string.IsNullOrWhiteSpace(reference) && Path.IsPathFullyQualified(reference);
         var isMonochrome = reference?.Contains("monochrome", StringComparison.OrdinalIgnoreCase) == true;
@@ -209,6 +214,13 @@ public partial class MetadataWindow : Window
         Trace.WriteLine($"[PublisherLogo] Decision: publisher='{publisher ?? "(none)"}', " +
             $"reference={(isLocal ? "local" : isMonochrome ? "ScreenScraper monochrome" :
                 generatedColor ? "ScreenScraper generated color" : string.IsNullOrWhiteSpace(reference) ? "none" : "remote")}." );
+        if (!allowOnline)
+        {
+            var cached = linked?.Path ?? CoverCache.FindCached(reference);
+            Trace.WriteLine($"[PublisherLogo] Offline dialog: {(cached is null ? "no cached logo" : "using cached logo")}." );
+            _publisherLogoSource = "offline cache";
+            return cached;
+        }
         if (!knownMonochromeLocal && (isLocal || !isMonochrome))
         {
             var existing = await CoverCache.CacheAsync(reference);
@@ -258,10 +270,14 @@ public partial class MetadataWindow : Window
     private async System.Threading.Tasks.Task LoadImageAsync(TextBox box, Image image, TextBlock status, bool cover)
     {
         if (string.IsNullOrWhiteSpace(box.Text)) return;
-        status.Text = cover ? "Downloading cover..." : "Downloading screenshot...";
+        status.Text = _allowOnlineMediaLookup
+            ? cover ? "Downloading cover..." : "Downloading screenshot..."
+            : cover ? "Loading cover from offline cache..." : "Loading screenshot from offline cache...";
         try
         {
-            var path = await CoverCache.CacheAsync(box.Text);
+            var path = _allowOnlineMediaLookup
+                ? await CoverCache.CacheAsync(box.Text)
+                : CoverCache.FindCached(box.Text);
             if (_closed) return;
             if (path is null) throw new IOException("Image unavailable.");
             box.Text = path;
@@ -279,7 +295,9 @@ public partial class MetadataWindow : Window
             if (_closed) return;
             Trace.WriteLine($"[MediaCache] Dialog image load failed: {ex.GetType().Name}: {ex.Message}");
             box.Text = string.Empty;
-            status.Text = cover ? "Cover could not be downloaded." : "Screenshot could not be downloaded.";
+            status.Text = _allowOnlineMediaLookup
+                ? cover ? "Cover could not be downloaded." : "Screenshot could not be downloaded."
+                : cover ? "No cached cover available." : "No cached screenshot available.";
         }
     }
 
