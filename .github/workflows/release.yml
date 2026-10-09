@@ -118,8 +118,15 @@ jobs:
           mkdir dmg-root
           cp -R bundle/AmiDiskLab.app dmg-root/
           ln -s /Applications dmg-root/Applications
-          hdiutil create -volname "AmiDiskLab" -srcfolder dmg-root \
-            -ov -format UDZO '${{ matrix.artifact }}.dmg'
+          for attempt in 1 2 3; do
+            if hdiutil create -volname "AmiDiskLab" -srcfolder dmg-root \
+              -ov -format UDZO '${{ matrix.artifact }}.dmg'; then
+              break
+            fi
+            rm -f '${{ matrix.artifact }}.dmg'
+            if [ "$attempt" -eq 3 ]; then exit 1; fi
+            sleep 5
+          done
           hdiutil verify '${{ matrix.artifact }}.dmg'
       - uses: actions/upload-artifact@v4
         with:
