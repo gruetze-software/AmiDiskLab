@@ -10,7 +10,6 @@
 </p>
 
 
-<img width="1402" height="851" alt="grafik" src="https://github.com/user-attachments/assets/863dff95-14dc-4fee-8770-9090d6d00faa" />
 
 <p align="center">
   <a href="https://github.com/gruetze-software/AmiDiskLab/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/gruetze-software/AmiDiskLab"></a>
@@ -20,7 +19,7 @@
 
 ## Ready for Windows, Linux, and macOS
 
-AmiDiskLab 1.2.1 is available as a **self-contained desktop application** for:
+AmiDiskLab 1.4 is available as a **self-contained desktop application** for:
 
 - Windows x64
 - Linux x64
@@ -31,6 +30,15 @@ AmiDiskLab 1.2.1 is available as a **self-contained desktop application** for:
 platform from the [latest release](https://github.com/gruetze-software/AmiDiskLab/releases/latest),
 extract it, and start AmiDiskLab.
 
+## New in 1.4
+
+- Choose **Use system setting**, **Dark**, or **Light** for a consistent appearance on
+  Windows, Linux, and macOS.
+- Shared theme colors now keep text, lists, dialogs, and the batch monitor readable across
+  desktop environments and display scaling settings.
+- A refined AmiDiskLab logo with corrected floppy-disk geometry is used consistently for
+  window title bars, executable icons, Linux integration, macOS bundles, and documentation.
+- The settings tabs use a compact single-row layout with clearer content separation.
 ## Highlights
 
 ### Manage Amiga software collections
@@ -101,14 +109,14 @@ images when a package does not contain suitable embedded ADF data.
 
 ## Downloads and first start
 
-Download [AmiDiskLab 1.2.1](https://github.com/gruetze-software/AmiDiskLab/releases/tag/v1.2.1):
+Download [AmiDiskLab 1.4](https://github.com/gruetze-software/AmiDiskLab/releases/tag/v1.4):
 
 | Platform | Package |
 | --- | --- |
-| Windows x64 | [AmiDiskLab-Windows-x64.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2.1/AmiDiskLab-Windows-x64.zip) |
-| Linux x64 | [AmiDiskLab-Linux-x64.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2.1/AmiDiskLab-Linux-x64.tar.gz) |
-| macOS Apple Silicon | [AmiDiskLab-macOS-Apple-Silicon.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2.1/AmiDiskLab-macOS-Apple-Silicon.zip) |
-| macOS Intel | [AmiDiskLab-macOS-Intel.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2.1/AmiDiskLab-macOS-Intel.zip) |
+| Windows x64 | [AmiDiskLab-Windows-x64.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.4/AmiDiskLab-Windows-x64.zip) |
+| Linux x64 | [AmiDiskLab-Linux-x64.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.4/AmiDiskLab-Linux-x64.tar.gz) |
+| macOS Apple Silicon | [AmiDiskLab-macOS-Apple-Silicon.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.4/AmiDiskLab-macOS-Apple-Silicon.zip) |
+| macOS Intel | [AmiDiskLab-macOS-Intel.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.4/AmiDiskLab-macOS-Intel.zip) |
 
 On Linux, mark the extracted application as executable if necessary:
 

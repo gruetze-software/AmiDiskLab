@@ -13,7 +13,7 @@ install -m 644 "$SOURCE_DIR/AmiDiskLab.png" "$ICON_DIR/AmiDiskLab.png"
 cat > "$DESKTOP_DIR/AmiDiskLab.desktop" <<EOF
 [Desktop Entry]
 Type=Application
-Version=1.2.1
+Version=1.4
 Name=AmiDiskLab
 GenericName=Amiga Disk & Software Manager
 Comment=Manage Amiga disk images, archives, and software metadata
