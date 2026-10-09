@@ -21,7 +21,7 @@
 
 ## Ready for Windows, Linux, and macOS
 
-AmiDiskLab 1.5 is available as a **self-contained desktop application** for:
+AmiDiskLab 1.6 is available as a **self-contained desktop application** for:
 
 - Windows x64
 - Linux x64
@@ -31,6 +31,12 @@ AmiDiskLab 1.5 is available as a **self-contained desktop application** for:
 **No separate .NET runtime or SDK installation is required.** Download the package for your
 platform from the [latest release](https://github.com/gruetze-software/AmiDiskLab/releases/latest),
 extract it, and start AmiDiskLab.
+
+## New in 1.6
+
+- macOS downloads now include a DMG with the familiar drag-to-Applications installation.
+- Windows ZIP packages include per-user install and uninstall scripts with Start menu shortcuts.
+- Linux packages continue to include per-user desktop integration scripts.
 
 ## New in 1.5
 
@@ -112,14 +118,22 @@ images when a package does not contain suitable embedded ADF data.
 
 ## Downloads and first start
 
-Download [AmiDiskLab 1.5](https://github.com/gruetze-software/AmiDiskLab/releases/tag/v1.5):
+Download [AmiDiskLab 1.6](https://github.com/gruetze-software/AmiDiskLab/releases/tag/v1.6):
 
 | Platform | Package |
 | --- | --- |
-| Windows x64 | [AmiDiskLab-Windows-x64.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.5/AmiDiskLab-Windows-x64.zip) |
-| Linux x64 | [AmiDiskLab-Linux-x64.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.5/AmiDiskLab-Linux-x64.tar.gz) |
-| macOS Apple Silicon | [AmiDiskLab-macOS-Apple-Silicon.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.5/AmiDiskLab-macOS-Apple-Silicon.zip) |
-| macOS Intel | [AmiDiskLab-macOS-Intel.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.5/AmiDiskLab-macOS-Intel.zip) |
+| Windows x64 | [AmiDiskLab-Windows-x64.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.6/AmiDiskLab-Windows-x64.zip) |
+| Linux x64 | [AmiDiskLab-Linux-x64.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.6/AmiDiskLab-Linux-x64.tar.gz) |
+| macOS Apple Silicon | [DMG](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.6/AmiDiskLab-macOS-Apple-Silicon.dmg) · [ZIP](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.6/AmiDiskLab-macOS-Apple-Silicon.zip) |
+| macOS Intel | [DMG](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.6/AmiDiskLab-macOS-Intel.dmg) · [ZIP](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.6/AmiDiskLab-macOS-Intel.zip) |
+
+The Windows archive contains `install-user.ps1` and `uninstall-user.ps1`. The installer copies
+AmiDiskLab into the current user's local application folder and adds Start menu shortcuts. Run it
+from PowerShell after extracting the complete archive:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install-user.ps1
+```
 
 On Linux, mark the extracted application as executable if necessary:
 
@@ -131,6 +145,9 @@ chmod +x AmiDiskLab
 The Linux archive also contains the application logo and `install-user.sh`. Run the script
 to add AmiDiskLab to the current user's desktop application menu; `uninstall-user.sh`
 removes that integration again.
+
+For macOS, open the DMG and drag **AmiDiskLab.app** onto the **Applications** shortcut. ZIP
+packages remain available as a fallback.
 
 The macOS application bundles are ad-hoc signed and verified during the release build. They
 are not notarized because the project does not use a paid Apple Developer account. If macOS

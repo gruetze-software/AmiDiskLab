@@ -61,7 +61,9 @@ jobs:
       - name: Package Windows build
         if: runner.os == 'Windows'
         shell: pwsh
-        run: Compress-Archive -Path publish/* -DestinationPath '${{ matrix.artifact }}.zip'
+        run: |
+          Copy-Item packaging/windows/install-user.ps1,packaging/windows/uninstall-user.ps1 publish/
+          Compress-Archive -Path publish/* -DestinationPath '${{ matrix.artifact }}.zip'
       - name: Package Linux build
         if: runner.os == 'Linux'
         shell: bash
@@ -113,6 +115,12 @@ jobs:
           codesign --verify --deep --strict --verbose=2 bundle/AmiDiskLab.app
           ditto -c -k --sequesterRsrc --keepParent \
             bundle/AmiDiskLab.app '${{ matrix.artifact }}.zip'
+          mkdir dmg-root
+          cp -R bundle/AmiDiskLab.app dmg-root/
+          ln -s /Applications dmg-root/Applications
+          hdiutil create -volname "AmiDiskLab" -srcfolder dmg-root \
+            -ov -format UDZO '${{ matrix.artifact }}.dmg'
+          hdiutil verify '${{ matrix.artifact }}.dmg'
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
