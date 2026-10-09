@@ -100,9 +100,9 @@ public partial class BatchMetadataWindow : Window
         }
     }
 
-    private static bool NeedsMetadata(RetroSoftwareItem item) => item.Format == SoftwareFormat.Adf &&
-        (string.IsNullOrWhiteSpace(item.Metadata.Title) || string.IsNullOrWhiteSpace(item.Metadata.CoverUrl) ||
-         item.Metadata.Category == SoftwareCategory.Unknown);
+    private static bool NeedsMetadata(RetroSoftwareItem item) =>
+        string.IsNullOrWhiteSpace(item.Metadata.Title) || string.IsNullOrWhiteSpace(item.Metadata.CoverUrl) ||
+        item.Metadata.Category == SoftwareCategory.Unknown;
 
     private static async Task<SoftwareMetadata> CacheMediaAsync(SoftwareMetadata metadata)
     {
