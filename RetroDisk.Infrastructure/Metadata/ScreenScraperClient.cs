@@ -118,6 +118,8 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
     internal static string CleanFileNameForSearch(string title)
     {
         var cleaned = title.Replace('_', ' ');
+        var hasPackageVersion = Regex.IsMatch(cleaned, @"(?:^|\s)v\d+(?:\.\d+)*(?=\s|$)",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         cleaned = Regex.Replace(cleaned, @"(?<=[a-z0-9])(?=[A-Z])", " ",
             RegexOptions.CultureInvariant);
         cleaned = RemoveParentheticalFileTags(cleaned);
@@ -126,6 +128,9 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         cleaned = Regex.Replace(cleaned, @"\s+(?:19|20)\d{2}\s*$", "",
             RegexOptions.CultureInvariant);
+        if (hasPackageVersion)
+            cleaned = Regex.Replace(cleaned, @"\s+\d{3,6}\s*$", "",
+                RegexOptions.CultureInvariant);
         return Regex.Replace(cleaned, @"\s+", " ", RegexOptions.CultureInvariant)
             .Trim(' ', '-', '_');
     }

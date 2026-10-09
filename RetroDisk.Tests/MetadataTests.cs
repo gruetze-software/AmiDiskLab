@@ -237,6 +237,8 @@ public class MetadataTests
     [Theory]
     [InlineData("Aaargh!_v0.1_Arcadia", "Aaargh!")]
     [InlineData("AxeOfRage_v1.2_NTSC_2018", "Axe Of Rage")]
+    [InlineData("Cyberball_v1.0_1446", "Cyberball")]
+    [InlineData("DangerFreak_v1.1_0975", "Danger Freak")]
     public void ScreenScraperCleansPackagedArchiveNames(string fileName, string expected)
     {
         Assert.Equal(expected, ScreenScraperClient.CleanFileNameForSearch(fileName));

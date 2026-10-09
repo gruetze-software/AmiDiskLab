@@ -5,7 +5,7 @@
   <Grid Margin="22" RowDefinitions="Auto,Auto,Auto,*,Auto" RowSpacing="14">
     <StackPanel>
       <TextBlock Text="Collection metadata monitor" FontSize="23" FontWeight="Bold"/>
-      <TextBlock Text="Exact hash matches are saved automatically. Ambiguous title matches remain unchanged for review."
+      <TextBlock Text="Exact hash matches and unambiguous title matches are saved automatically. Multiple matches remain unchanged for review."
                  Opacity="0.75" TextWrapping="Wrap"/>
     </StackPanel>
     <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*" ColumnSpacing="12">
@@ -22,10 +22,11 @@
     <Border Grid.Row="3" Background="{DynamicResource AppPanelBrush}" BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10">
       <ListBox x:Name="LogList" Background="Transparent" BorderThickness="0" FontFamily="Consolas" FontSize="12"/>
     </Border>
-    <Grid Grid.Row="4" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+    <Grid Grid.Row="4" ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="10">
       <TextBlock x:Name="SummaryText" VerticalAlignment="Center" Opacity="0.75"/>
-      <Button Grid.Column="1" x:Name="CancelButton" Click="Cancel_Click" Content="Cancel"/>
-      <Button Grid.Column="2" x:Name="CloseButton" Click="Close_Click" Content="Close" IsEnabled="False"/>
+      <Button Grid.Column="1" x:Name="ReviewButton" Click="Review_Click" Content="Review matches" IsEnabled="False"/>
+      <Button Grid.Column="2" x:Name="CancelButton" Click="Cancel_Click" Content="Cancel"/>
+      <Button Grid.Column="3" x:Name="CloseButton" Click="Close_Click" Content="Close" IsEnabled="False"/>
     </Grid>
   </Grid>
 </Window>

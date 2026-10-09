@@ -5,6 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
@@ -18,6 +20,7 @@ public partial class BatchMetadataWindow : Window
     private readonly MainWindowViewModel _viewModel;
     private readonly CancellationTokenSource _cancellation = new();
     private readonly ObservableCollection<string> _log = [];
+    private readonly ConcurrentQueue<PendingReview> _pendingReviews = new();
     private int _processed, _saved, _review, _miss, _total;
 
     public BatchMetadataWindow() { InitializeComponent(); _viewModel = null!; }
@@ -57,12 +60,12 @@ public partial class BatchMetadataWindow : Window
                 _viewModel.FinishBatchMetadata(SummaryText.Text);
                 return;
             }
-            SummaryText.Text = $"Completed: {_saved} saved, {_review} need review, {_miss} without an exact match.";
+            SummaryText.Text = $"Completed: {_saved} saved, {_review} need review, {_miss} without a usable match.";
             _viewModel.FinishBatchMetadata(SummaryText.Text);
         }
         catch (OperationCanceledException) { AddLog("Cancelled. Already saved metadata remains available."); SummaryText.Text = "Cancelled safely."; }
         catch (Exception ex) { AddLog($"ERROR: {ex.Message}"); SummaryText.Text = "The batch stopped because of an error."; }
-        finally { CancelButton.IsEnabled = false; CloseButton.IsEnabled = true; }
+        finally { CancelButton.IsEnabled = false; ReviewButton.IsEnabled = !_pendingReviews.IsEmpty; CloseButton.IsEnabled = true; }
     }
 
     private async ValueTask ProcessAsync(ScreenScraperClient client, ScreenScraperAccess access,
@@ -77,14 +80,15 @@ public partial class BatchMetadataWindow : Window
                 _viewModel.ScreenScraperPreferences, token);
             if (token.IsCancellationRequested) return;
             var exact = matches.FirstOrDefault(match => match.Source.Contains("exact SHA-1", StringComparison.Ordinal));
-            if (exact is null)
+            var automaticMatch = exact ?? (matches.Count == 1 ? matches[0] : null);
+            if (automaticMatch is null)
             {
-                if (matches.Count > 0) { Interlocked.Increment(ref _review); AddLog($"REVIEW  {item.DisplayTitle} ({matches.Count} candidate(s))"); }
+                if (matches.Count > 0) { _pendingReviews.Enqueue(new PendingReview(item, matches)); Interlocked.Increment(ref _review); AddLog($"REVIEW  {item.DisplayTitle} ({matches.Count} candidates)"); }
                 else { Interlocked.Increment(ref _miss); AddLog($"NO MATCH {item.DisplayTitle}"); }
             }
             else
             {
-                var metadata = await CacheMediaAsync(exact.Metadata);
+                var metadata = await CacheMediaAsync(automaticMatch.Metadata);
                 await Dispatcher.UIThread.InvokeAsync(() => _viewModel.SaveBatchMetadata(item, metadata));
                 Interlocked.Increment(ref _saved);
                 AddLog($"SAVED   {item.DisplayTitle} -> {metadata.Title}");
@@ -125,6 +129,7 @@ public partial class BatchMetadataWindow : Window
     {
         ProcessedText.Text = $"{_processed} / {_total}";
         SavedText.Text = _saved.ToString(); ReviewText.Text = _review.ToString(); MissText.Text = _miss.ToString();
+        ReviewButton.Content = _review > 0 ? $"Review matches ({_review})" : "Review matches";
         Progress.Value = _processed;
     }
 
@@ -135,6 +140,40 @@ public partial class BatchMetadataWindow : Window
         LogList.ScrollIntoView(_log[^1]);
     });
 
+    private async void Review_Click(object? sender, RoutedEventArgs e)
+    {
+        ReviewButton.IsEnabled = false;
+        while (_pendingReviews.TryDequeue(out var pending))
+        {
+            var picker = new ScreenScraperMatchesWindow(pending.Matches, "Review ScreenScraper matches",
+                $"Choose the correct match for {pending.Item.DisplayTitle}.");
+            if (!await picker.ShowDialog<bool>(this) || picker.SelectedMatch is null)
+            {
+                _pendingReviews.Enqueue(pending);
+                break;
+            }
+
+            var editor = new MetadataWindow(pending.Item, picker.SelectedMatch, preferSuggestion: true,
+                metadataLanguage: _viewModel.ScreenScraperPreferences.Language);
+            if (!await editor.ShowDialog<bool>(this))
+            {
+                _pendingReviews.Enqueue(pending);
+                break;
+            }
+
+            _viewModel.SaveBatchMetadata(pending.Item, editor.Metadata);
+            Interlocked.Decrement(ref _review);
+            Interlocked.Increment(ref _saved);
+            AddLog($"SAVED   {pending.Item.DisplayTitle} -> {editor.Metadata.Title}");
+            UpdateCounters();
+        }
+
+        ReviewButton.IsEnabled = !_pendingReviews.IsEmpty;
+        SummaryText.Text = $"Completed: {_saved} saved, {_review} need review, {_miss} without a usable match.";
+        _viewModel.FinishBatchMetadata(SummaryText.Text);
+    }
     private void Cancel_Click(object? sender, RoutedEventArgs e) { CancelButton.IsEnabled = false; _cancellation.Cancel(); }
     private void Close_Click(object? sender, RoutedEventArgs e) => Close();
+
+    private sealed record PendingReview(RetroSoftwareItem Item, IReadOnlyList<MetadataSuggestion> Matches);
 }
