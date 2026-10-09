@@ -9,7 +9,9 @@
   Organize disk collections, enrich them with metadata, and create or extract ADF images.
 </p>
 
+<img width="1402" height="851" alt="grafik" src="https://github.com/user-attachments/assets/ff90e63f-bc03-42ef-960e-a7f8a6ab985c" />
 
+<img width="1127" height="851" alt="grafik" src="https://github.com/user-attachments/assets/7c8f558a-321b-498a-a429-6173788abb6d" />
 
 <p align="center">
   <a href="https://github.com/gruetze-software/AmiDiskLab/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/gruetze-software/AmiDiskLab"></a>
