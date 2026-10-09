@@ -69,11 +69,12 @@ werden.
 - Eine öffentliche Veröffentlichung wird durch einen Versions-Tag gestartet:
 
 ```powershell
-git tag -a v1.2 -m "AmiDiskLab 1.2"
-git push origin v1.2
+git tag -a v1.2.1 -m "AmiDiskLab 1.2.1"
+git push origin v1.2.1
 ```
 
-Nach erfolgreichem Test erstellt GitHub automatisch das Release **AmiDiskLab 1.2**
+Nach erfolgreichem Test erstellt GitHub automatisch das Release **AmiDiskLab 1.2.1**
 und hängt alle vier Archive an. Die Pakete enthalten die .NET-Laufzeit. Die
-macOS-Pakete sind nicht mit einem Apple-Entwicklerzertifikat signiert; macOS kann
-daher beim ersten Start eine Sicherheitsbestätigung verlangen.
+macOS-Pakete werden ad-hoc signiert und im Workflow geprüft, jedoch ohne bezahltes
+Apple-Entwicklerzertifikat nicht notarisiert. Daher kann das Entfernen des
+Quarantäne-Attributs beim ersten Start erforderlich sein.

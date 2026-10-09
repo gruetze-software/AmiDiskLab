@@ -108,7 +108,11 @@ jobs:
             <key>NSHighResolutionCapable</key><true/>
           </dict></plist>
           PLIST
-          tar -C bundle -czf '${{ matrix.artifact }}.tar.gz' AmiDiskLab.app
+          codesign --force --deep --sign - --timestamp=none \
+            --entitlements packaging/macos/entitlements.plist bundle/AmiDiskLab.app
+          codesign --verify --deep --strict --verbose=2 bundle/AmiDiskLab.app
+          ditto -c -k --sequesterRsrc --keepParent \
+            bundle/AmiDiskLab.app '${{ matrix.artifact }}.zip'
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}

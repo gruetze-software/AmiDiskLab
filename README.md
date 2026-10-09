@@ -20,7 +20,7 @@
 
 ## Ready for Windows, Linux, and macOS
 
-AmiDiskLab 1.2 is available as a **self-contained desktop application** for:
+AmiDiskLab 1.2.1 is available as a **self-contained desktop application** for:
 
 - Windows x64
 - Linux x64
@@ -101,14 +101,14 @@ images when a package does not contain suitable embedded ADF data.
 
 ## Downloads and first start
 
-Download [AmiDiskLab 1.2](https://github.com/gruetze-software/AmiDiskLab/releases/tag/v1.2):
+Download [AmiDiskLab 1.2.1](https://github.com/gruetze-software/AmiDiskLab/releases/tag/v1.2.1):
 
 | Platform | Package |
 | --- | --- |
-| Windows x64 | [AmiDiskLab-Windows-x64.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2/AmiDiskLab-Windows-x64.zip) |
-| Linux x64 | [AmiDiskLab-Linux-x64.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2/AmiDiskLab-Linux-x64.tar.gz) |
-| macOS Apple Silicon | [AmiDiskLab-macOS-Apple-Silicon.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2/AmiDiskLab-macOS-Apple-Silicon.tar.gz) |
-| macOS Intel | [AmiDiskLab-macOS-Intel.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2/AmiDiskLab-macOS-Intel.tar.gz) |
+| Windows x64 | [AmiDiskLab-Windows-x64.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2.1/AmiDiskLab-Windows-x64.zip) |
+| Linux x64 | [AmiDiskLab-Linux-x64.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2.1/AmiDiskLab-Linux-x64.tar.gz) |
+| macOS Apple Silicon | [AmiDiskLab-macOS-Apple-Silicon.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2.1/AmiDiskLab-macOS-Apple-Silicon.zip) |
+| macOS Intel | [AmiDiskLab-macOS-Intel.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.2.1/AmiDiskLab-macOS-Intel.zip) |
 
 On Linux, mark the extracted application as executable if necessary:
 
@@ -121,8 +121,16 @@ The Linux archive also contains the application logo and `install-user.sh`. Run 
 to add AmiDiskLab to the current user's desktop application menu; `uninstall-user.sh`
 removes that integration again.
 
-The macOS application bundles are currently unsigned. On first launch, macOS may require
-you to Control-click **AmiDiskLab.app**, select **Open**, and confirm the security prompt.
+The macOS application bundles are ad-hoc signed and verified during the release build. They
+are not notarized because the project does not use a paid Apple Developer account. If macOS
+reports that the app is damaged, download it only from this official GitHub release and run:
+
+```bash
+xattr -dr com.apple.quarantine "/path/to/AmiDiskLab.app"
+```
+
+You can type the command up to the trailing space and drag **AmiDiskLab.app** into Terminal
+to insert its path. Start the application again afterwards.
 
 ## Metadata and local files
 
