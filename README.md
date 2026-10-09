@@ -21,7 +21,7 @@
 
 ## Ready for Windows, Linux, and macOS
 
-AmiDiskLab 1.4 is available as a **self-contained desktop application** for:
+AmiDiskLab 1.5 is available as a **self-contained desktop application** for:
 
 - Windows x64
 - Linux x64
@@ -32,15 +32,16 @@ AmiDiskLab 1.4 is available as a **self-contained desktop application** for:
 platform from the [latest release](https://github.com/gruetze-software/AmiDiskLab/releases/latest),
 extract it, and start AmiDiskLab.
 
-## New in 1.4
+## New in 1.5
 
-- Choose **Use system setting**, **Dark**, or **Light** for a consistent appearance on
-  Windows, Linux, and macOS.
-- Shared theme colors now keep text, lists, dialogs, and the batch monitor readable across
-  desktop environments and display scaling settings.
-- A refined AmiDiskLab logo with corrected floppy-disk geometry is used consistently for
-  window title bars, executable icons, Linux integration, macOS bundles, and documentation.
-- The settings tabs use a compact single-row layout with clearer content separation.
+- ScreenScraper title searches now work for **LHA, HFE, DMS, and IPF** entries as well as ADF files.
+- Packaged archive names are cleaned before searching, including camel-case titles, version tags,
+  video standards, platform tags, years, and WHDLoad package numbers.
+- Collection enrichment automatically saves exact hash matches and single unambiguous title matches.
+- Entries with multiple matches are kept in a review queue where the correct result can be selected
+  and edited using the same dialogs as an individual metadata search.
+- The collection monitor now includes all supported formats and clearly separates saved, review,
+  and unmatched entries.
 ## Highlights
 
 ### Manage Amiga software collections
@@ -70,7 +71,7 @@ count and stores shared metadata for the complete set.
 - ratings, cover art, screenshots, and company logos
 - multiple-result selection when a search is ambiguous
 - collection-wide batch enrichment with account-aware parallel requests, quota monitoring,
-  automatic saving of exact hash matches, and a live activity log
+  automatic saving of exact or unambiguous title matches, an interactive review queue, and a live activity log
 
 Cover art, screenshots, and logos are cached locally for offline use. A personal
 ScreenScraper account is optional. On Windows, optional personal credentials are encrypted
@@ -111,14 +112,14 @@ images when a package does not contain suitable embedded ADF data.
 
 ## Downloads and first start
 
-Download [AmiDiskLab 1.4](https://github.com/gruetze-software/AmiDiskLab/releases/tag/v1.4):
+Download [AmiDiskLab 1.5](https://github.com/gruetze-software/AmiDiskLab/releases/tag/v1.5):
 
 | Platform | Package |
 | --- | --- |
-| Windows x64 | [AmiDiskLab-Windows-x64.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.4/AmiDiskLab-Windows-x64.zip) |
-| Linux x64 | [AmiDiskLab-Linux-x64.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.4/AmiDiskLab-Linux-x64.tar.gz) |
-| macOS Apple Silicon | [AmiDiskLab-macOS-Apple-Silicon.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.4/AmiDiskLab-macOS-Apple-Silicon.zip) |
-| macOS Intel | [AmiDiskLab-macOS-Intel.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.4/AmiDiskLab-macOS-Intel.zip) |
+| Windows x64 | [AmiDiskLab-Windows-x64.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.5/AmiDiskLab-Windows-x64.zip) |
+| Linux x64 | [AmiDiskLab-Linux-x64.tar.gz](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.5/AmiDiskLab-Linux-x64.tar.gz) |
+| macOS Apple Silicon | [AmiDiskLab-macOS-Apple-Silicon.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.5/AmiDiskLab-macOS-Apple-Silicon.zip) |
+| macOS Intel | [AmiDiskLab-macOS-Intel.zip](https://github.com/gruetze-software/AmiDiskLab/releases/download/v1.5/AmiDiskLab-macOS-Intel.zip) |
 
 On Linux, mark the extracted application as executable if necessary:
 
