@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="AmiDiskLab.App.Views.MetadataWindow"
-        Background="#34383F"
+
         Icon="/Assets/AmiDiskLab.ico"
         Title="Software metadata" Width="700" Height="760" FontSize="13"
         MinWidth="560" MinHeight="560"

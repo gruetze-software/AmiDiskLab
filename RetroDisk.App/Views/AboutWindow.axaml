@@ -3,7 +3,7 @@
         x:Class="AmiDiskLab.App.Views.AboutWindow"
         Icon="/Assets/AmiDiskLab.ico"
         Title="About AmiDiskLab"
-        Background="#34383F"
+
         Width="520"
         Height="580"
         CanResize="False"

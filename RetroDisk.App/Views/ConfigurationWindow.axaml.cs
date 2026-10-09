@@ -14,22 +14,26 @@ public partial class ConfigurationWindow : Window
     public AmigaTargetSystem TargetSystem { get; private set; } = AmigaTargetSystem.Default;
     public ScreenScraperAccess? Access { get; private set; }
     public ScreenScraperPreferences Preferences { get; private set; } = ScreenScraperPreferences.Default;
+    public UiPreferences UiPreferences { get; private set; } = UiPreferences.Default;
 
     public ConfigurationWindow() => InitializeComponent();
 
     public ConfigurationWindow(AmigaTargetSystem target, ScreenScraperAccess? access,
         ScreenScraperPreferences preferences,
+        UiPreferences uiPreferences,
         bool showScreenScraper = false) : this()
     {
         TargetSystem = target;
         Access = access;
         Preferences = preferences;
+        UiPreferences = uiPreferences;
         KickstartBox.SelectedIndex = (int)target.Kickstart;
         RamBox.SelectedIndex = Array.IndexOf(RamChoices, target.RamMiB);
         UserIdBox.Text = access?.UserId;
         UserPasswordBox.Text = access?.UserPassword;
         LanguageBox.SelectedIndex = Array.IndexOf(Languages, preferences.Language);
         RegionBox.SelectedIndex = Array.IndexOf(Regions, preferences.Region);
+        ThemeBox.SelectedIndex = (int)uiPreferences.Theme;
         SettingsTabs.SelectedIndex = showScreenScraper ? 1 : 0;
         if (!OperatingSystem.IsWindows())
             CredentialHint.Text = "A personal ScreenScraper account is not required. Signing in uses your account limits and member benefits. On this system, credentials are used for the current session only and are not stored.";
@@ -46,6 +50,7 @@ public partial class ConfigurationWindow : Window
         Access = new ScreenScraperAccess(userId, userPassword);
         Preferences = new ScreenScraperPreferences(Languages[LanguageBox.SelectedIndex],
             Regions[RegionBox.SelectedIndex]);
+        UiPreferences = new UiPreferences((AppTheme)ThemeBox.SelectedIndex);
         Close(true);
     }
 

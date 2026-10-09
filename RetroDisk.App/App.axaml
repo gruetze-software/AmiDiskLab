@@ -3,13 +3,28 @@
              x:Class="AmiDiskLab.App.App"
              xmlns:local="using:AmiDiskLab.App"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-  
-    <Application.Styles>
-        <FluentTheme />
-    </Application.Styles>
+  <Application.DataTemplates>
+    <local:ViewLocator/>
+  </Application.DataTemplates>
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="AppPanelBrush" Color="#F3F4F6"/>
+          <SolidColorBrush x:Key="AppRowBrush" Color="#FFFFFF"/>
+          <SolidColorBrush x:Key="AppRowHoverBrush" Color="#E7EDF3"/>
+          <SolidColorBrush x:Key="AppBorderBrush" Color="#B8BEC6"/>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="AppPanelBrush" Color="#34383F"/>
+          <SolidColorBrush x:Key="AppRowBrush" Color="#3B3F46"/>
+          <SolidColorBrush x:Key="AppRowHoverBrush" Color="#474C54"/>
+          <SolidColorBrush x:Key="AppBorderBrush" Color="#50545A"/>
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+  <Application.Styles>
+    <FluentTheme />
+  </Application.Styles>
 </Application>

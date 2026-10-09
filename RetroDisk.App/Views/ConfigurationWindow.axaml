@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="AmiDiskLab.App.Views.ConfigurationWindow"
         Icon="/Assets/AmiDiskLab.ico"
-        Background="#34383F"
+
         Title="Settings" Width="500" Height="560" MinWidth="460" MinHeight="500"
         WindowStartupLocation="CenterOwner" FontSize="12">
   <Grid Margin="20" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="12">
@@ -41,7 +41,18 @@
           </ComboBox>
         </StackPanel>
       </TabItem>
-    </TabControl>
+      <TabItem Header="Appearance">
+        <StackPanel Margin="12" Spacing="10">
+          <TextBlock Text="Color theme"/>
+          <ComboBox x:Name="ThemeBox">
+            <ComboBoxItem Content="Use system setting"/>
+            <ComboBoxItem Content="Dark"/>
+            <ComboBoxItem Content="Light"/>
+          </ComboBox>
+          <TextBlock Text="The setting applies to the entire application and is restored the next time AmiDiskLab starts."
+                     Opacity="0.7" TextWrapping="Wrap"/>
+        </StackPanel>
+      </TabItem>    </TabControl>
     <TextBlock x:Name="ValidationText" Grid.Row="2" Foreground="OrangeRed" TextWrapping="Wrap"/>
     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
       <Button Click="Cancel_Click">

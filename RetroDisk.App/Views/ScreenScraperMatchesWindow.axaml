@@ -3,7 +3,7 @@
         xmlns:models="using:AmiDiskLab.Core.Models"
         x:Class="AmiDiskLab.App.Views.ScreenScraperMatchesWindow"
         Icon="/Assets/AmiDiskLab.ico"
-        Background="#34383F"
+
         Title="ScreenScraper matches" Width="650" Height="520" MinWidth="500" MinHeight="350"
         WindowStartupLocation="CenterOwner" FontSize="12">
   <Grid Margin="20" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">

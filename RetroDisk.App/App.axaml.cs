@@ -17,6 +17,7 @@ namespace AmiDiskLab.App
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+            ThemeManager.Apply(UiPreferencesStore.Load().Theme);
         }
 
         public override void OnFrameworkInitializationCompleted()

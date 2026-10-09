@@ -84,7 +84,7 @@ public partial class MainWindow : Window
         try
         {
             var dialog = new ConfigurationWindow(viewModel.TargetSystem, viewModel.ScreenScraperAccess,
-                viewModel.ScreenScraperPreferences);
+                viewModel.ScreenScraperPreferences, UiPreferencesStore.Load());
             if (!await dialog.ShowDialog<bool>(this)) return;
             new ScreenScraperAccessStore().Save(dialog.Access);
             TargetSystemSettingsStore.Save(dialog.TargetSystem);
@@ -92,6 +92,8 @@ public partial class MainWindow : Window
             viewModel.ScreenScraperAccess = dialog.Access;
             ScreenScraperPreferencesStore.Save(dialog.Preferences);
             viewModel.ScreenScraperPreferences = dialog.Preferences;
+            UiPreferencesStore.Save(dialog.UiPreferences);
+            ThemeManager.Apply(dialog.UiPreferences.Theme);
         }
         catch (Exception ex) { viewModel.ReportError("Target settings failed", ex); }
         finally { _dialogOpen = false; }
@@ -303,7 +305,7 @@ public partial class MainWindow : Window
     private async System.Threading.Tasks.Task<bool> ConfigureScreenScraperAsync(MainWindowViewModel viewModel)
     {
         var dialog = new ConfigurationWindow(viewModel.TargetSystem, viewModel.ScreenScraperAccess,
-            viewModel.ScreenScraperPreferences,
+            viewModel.ScreenScraperPreferences, UiPreferencesStore.Load(),
             showScreenScraper: true);
         if (!await dialog.ShowDialog<bool>(this)) return false;
         new ScreenScraperAccessStore().Save(dialog.Access);

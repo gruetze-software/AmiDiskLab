@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="AmiDiskLab.App.Views.BatchMetadataWindow" Title="ScreenScraper collection monitor"
         Icon="/Assets/AmiDiskLab.ico" Width="900" Height="650" MinWidth="720" MinHeight="500"
-        Background="#343940" WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner">
   <Grid Margin="22" RowDefinitions="Auto,Auto,Auto,*,Auto" RowSpacing="14">
     <StackPanel>
       <TextBlock Text="Collection metadata monitor" FontSize="23" FontWeight="Bold"/>
@@ -9,17 +9,17 @@
                  Opacity="0.75" TextWrapping="Wrap"/>
     </StackPanel>
     <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*" ColumnSpacing="12">
-      <Border Background="#292D32" CornerRadius="7" Padding="12"><StackPanel><TextBlock Text="Processed" Opacity="0.7"/><TextBlock x:Name="ProcessedText" Text="0 / 0" FontSize="20" FontWeight="SemiBold"/></StackPanel></Border>
-      <Border Grid.Column="1" Background="#292D32" CornerRadius="7" Padding="12"><StackPanel><TextBlock Text="Saved" Opacity="0.7"/><TextBlock x:Name="SavedText" Text="0" FontSize="20" Foreground="#77D18B" FontWeight="SemiBold"/></StackPanel></Border>
-      <Border Grid.Column="2" Background="#292D32" CornerRadius="7" Padding="12"><StackPanel><TextBlock Text="Needs review" Opacity="0.7"/><TextBlock x:Name="ReviewText" Text="0" FontSize="20" Foreground="#FFD166" FontWeight="SemiBold"/></StackPanel></Border>
-      <Border Grid.Column="3" Background="#292D32" CornerRadius="7" Padding="12"><StackPanel><TextBlock Text="No match / errors" Opacity="0.7"/><TextBlock x:Name="MissText" Text="0" FontSize="20" Foreground="#FF8A80" FontWeight="SemiBold"/></StackPanel></Border>
+      <Border Background="{DynamicResource AppRowBrush}" CornerRadius="7" Padding="12"><StackPanel><TextBlock Text="Processed" Opacity="0.7"/><TextBlock x:Name="ProcessedText" Text="0 / 0" FontSize="20" FontWeight="SemiBold"/></StackPanel></Border>
+      <Border Grid.Column="1" Background="{DynamicResource AppRowBrush}" CornerRadius="7" Padding="12"><StackPanel><TextBlock Text="Saved" Opacity="0.7"/><TextBlock x:Name="SavedText" Text="0" FontSize="20" Foreground="#77D18B" FontWeight="SemiBold"/></StackPanel></Border>
+      <Border Grid.Column="2" Background="{DynamicResource AppRowBrush}" CornerRadius="7" Padding="12"><StackPanel><TextBlock Text="Needs review" Opacity="0.7"/><TextBlock x:Name="ReviewText" Text="0" FontSize="20" Foreground="#FFD166" FontWeight="SemiBold"/></StackPanel></Border>
+      <Border Grid.Column="3" Background="{DynamicResource AppRowBrush}" CornerRadius="7" Padding="12"><StackPanel><TextBlock Text="No match / errors" Opacity="0.7"/><TextBlock x:Name="MissText" Text="0" FontSize="20" Foreground="#FF8A80" FontWeight="SemiBold"/></StackPanel></Border>
     </Grid>
     <StackPanel Grid.Row="2" Spacing="7">
       <TextBlock x:Name="AccountText" Text="Checking ScreenScraper account and quota..."/>
       <TextBlock x:Name="CurrentText" Opacity="0.75" TextTrimming="CharacterEllipsis"/>
       <ProgressBar x:Name="Progress" Minimum="0" Maximum="100" Height="9"/>
     </StackPanel>
-    <Border Grid.Row="3" Background="#202328" BorderBrush="#555B63" BorderThickness="1" CornerRadius="6" Padding="10">
+    <Border Grid.Row="3" Background="{DynamicResource AppPanelBrush}" BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10">
       <ListBox x:Name="LogList" Background="Transparent" BorderThickness="0" FontFamily="Consolas" FontSize="12"/>
     </Border>
     <Grid Grid.Row="4" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">

@@ -38,19 +38,20 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
       </Style>
       <Style Selector="ListBox.software-list">
-        <Setter Property="Background" Value="#34383F"/>
+        <Setter Property="Background" Value="{DynamicResource AppPanelBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
       </Style>
       <Style Selector="ListBox.software-list > ListBoxItem">
-        <Setter Property="Background" Value="#3B3F46"/>
+        <Setter Property="Background" Value="{DynamicResource AppRowBrush}"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="0,0,0,1"/>
       </Style>
       <Style Selector="ListBox.software-list > ListBoxItem:pointerover">
-        <Setter Property="Background" Value="#474C54"/>
+        <Setter Property="Background" Value="{DynamicResource AppRowHoverBrush}"/>
       </Style>
       <Style Selector="ListBox.software-list > ListBoxItem:selected">
         <Setter Property="Background" Value="#17679B"/>
+        <Setter Property="Foreground" Value="White"/>
       </Style>
     </Window.Styles>
 
@@ -59,7 +60,7 @@
       RowSpacing="12">
 
 		<!-- Header -->
-		<Border Grid.Row="0" BorderBrush="#50545A" BorderThickness="1" CornerRadius="10" Padding="12,9">
+		<Border Grid.Row="0" BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="12,9">
           <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="10" RowSpacing="6">
             <StackPanel Grid.RowSpan="2" Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
               <Image Source="/Assets/AmiDiskLab.ico" Width="52" Height="52" Stretch="Uniform"/>
@@ -103,8 +104,8 @@
 
 		<!-- Disk images -->
 		<Border Grid.Row="1"
-        BorderBrush="#50545A" BorderThickness="1"
-        Background="#34383F"
+        BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1"
+        Background="{DynamicResource AppPanelBrush}"
         CornerRadius="9"
         Padding="8">
 
@@ -186,7 +187,7 @@
 									ColumnSpacing="12"
 									Margin="8,6" MinHeight="108">
 
-                                <Border Grid.Column="0" Width="80" Height="98" Background="#454A52"
+                                <Border Grid.Column="0" Width="80" Height="98" Background="{DynamicResource AppRowHoverBrush}"
                                         BorderBrush="#60656D" BorderThickness="1" CornerRadius="5"
                                         HorizontalAlignment="Left" VerticalAlignment="Center">
                                   <Grid>
