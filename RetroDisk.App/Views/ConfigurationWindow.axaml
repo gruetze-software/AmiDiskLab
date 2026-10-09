@@ -3,13 +3,21 @@
         x:Class="AmiDiskLab.App.Views.ConfigurationWindow"
         Icon="/Assets/AmiDiskLab.ico"
 
-        Title="Settings" Width="500" Height="560" MinWidth="460" MinHeight="500"
+        Title="Settings" Width="560" Height="520" MinWidth="520" MinHeight="460"
         WindowStartupLocation="CenterOwner" FontSize="12">
-  <Grid Margin="20" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="12">
+  <Window.Styles>
+    <Style Selector="TabItem">
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Padding" Value="12,8"/>
+      <Setter Property="MinWidth" Value="0"/>
+    </Style>
+  </Window.Styles>
+  <Grid Margin="20" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="10">
     <TextBlock Text="Settings" FontSize="20" FontWeight="SemiBold"/>
     <TabControl x:Name="SettingsTabs" Grid.Row="1">
-      <TabItem Header="Amiga target">
-        <StackPanel Margin="12" Spacing="10">
+      <TabItem Header="Amiga" ToolTip.Tip="Amiga target system">
+        <Border BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="0,1,0,0" Margin="0,4,0,0" Padding="12,14,12,0">
+          <StackPanel Spacing="10">
           <TextBlock Text="Amiga 500 · Motorola 68000" FontWeight="SemiBold"/>
           <TextBlock Text="Kickstart"/>
           <ComboBox x:Name="KickstartBox">
@@ -20,10 +28,12 @@
             <ComboBoxItem Content="1 MiB"/><ComboBoxItem Content="2 MiB"/>
             <ComboBoxItem Content="4 MiB"/><ComboBoxItem Content="8 MiB"/>
           </ComboBox>
-        </StackPanel>
+          </StackPanel>
+        </Border>
       </TabItem>
-      <TabItem Header="ScreenScraper">
-        <StackPanel Margin="12" Spacing="8">
+      <TabItem Header="ScreenScraper" ToolTip.Tip="ScreenScraper account and metadata preferences">
+        <Border BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="0,1,0,0" Margin="0,4,0,0" Padding="12,14,12,0">
+          <StackPanel Spacing="8">
           <TextBlock Text="ScreenScraper username (optional)"/><TextBox x:Name="UserIdBox"/>
           <TextBlock Text="ScreenScraper password (optional)"/><TextBox x:Name="UserPasswordBox" PasswordChar="●"/>
           <TextBlock x:Name="CredentialHint" Text="A personal ScreenScraper account is not required. Signing in uses your account limits and member benefits. Your credentials are encrypted for your Windows account. Clear both fields and save to remove them."
@@ -39,10 +49,12 @@
             <ComboBoxItem Content="Europe"/><ComboBoxItem Content="USA"/>
             <ComboBoxItem Content="Japan"/><ComboBoxItem Content="World"/>
           </ComboBox>
-        </StackPanel>
+          </StackPanel>
+        </Border>
       </TabItem>
-      <TabItem Header="Appearance">
-        <StackPanel Margin="12" Spacing="10">
+      <TabItem Header="Appearance" ToolTip.Tip="Application colors and theme">
+        <Border BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="0,1,0,0" Margin="0,4,0,0" Padding="12,14,12,0">
+          <StackPanel Spacing="10">
           <TextBlock Text="Color theme"/>
           <ComboBox x:Name="ThemeBox">
             <ComboBoxItem Content="Use system setting"/>
@@ -51,8 +63,10 @@
           </ComboBox>
           <TextBlock Text="The setting applies to the entire application and is restored the next time AmiDiskLab starts."
                      Opacity="0.7" TextWrapping="Wrap"/>
-        </StackPanel>
-      </TabItem>    </TabControl>
+          </StackPanel>
+        </Border>
+      </TabItem>
+    </TabControl>
     <TextBlock x:Name="ValidationText" Grid.Row="2" Foreground="OrangeRed" TextWrapping="Wrap"/>
     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
       <Button Click="Cancel_Click">
