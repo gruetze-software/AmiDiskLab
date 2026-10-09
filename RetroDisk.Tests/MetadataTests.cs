@@ -234,6 +234,35 @@ public class MetadataTests
             ScreenScraperClient.NameSearchCandidates("Rainbow Islands - The Story of Bubble Bobble 2"));
     }
 
+    [Theory]
+    [InlineData("Aaargh!_v0.1_Arcadia", "Aaargh!")]
+    [InlineData("AxeOfRage_v1.2_NTSC_2018", "Axe Of Rage")]
+    public void ScreenScraperCleansPackagedArchiveNames(string fileName, string expected)
+    {
+        Assert.Equal(expected, ScreenScraperClient.CleanFileNameForSearch(fileName));
+    }
+
+    [Fact]
+    public async Task ScreenScraperSearchesLhaByCleanNameWithoutHashLookup()
+    {
+        using var folder = new TestFolder();
+        var archive = folder.File("AxeOfRage_v1.2_NTSC_2018.lha");
+        await File.WriteAllBytesAsync(archive, [1, 2, 3, 4]);
+        var handler = new StubHandler("<Data />")
+        {
+            SearchXml = "<Data><jeux><jeu><nom>Axe of Rage</nom></jeu></jeux></Data>"
+        };
+        using var http = new HttpClient(handler);
+
+        var matches = await new ScreenScraperClient(http).SearchAdfAsync(archive,
+            new ScreenScraperAccess("user", "user-secret"));
+
+        var match = Assert.Single(matches);
+        Assert.Equal("Axe of Rage", match.Metadata.Title);
+        Assert.Single(handler.SearchRequestUris);
+        Assert.Contains("recherche=Axe%20Of%20Rage", handler.SearchRequestUris[0].Query);
+        Assert.DoesNotContain("sha1=", handler.SearchRequestUris[0].Query);
+    }
     [Fact]
     public void ScreenScraperReadsRegionalTitleDateDescriptionPublisherAndCover()
     {

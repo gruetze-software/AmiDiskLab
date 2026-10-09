@@ -59,17 +59,16 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
         CancellationToken cancellationToken = default)
     {
         preferences.Validate();
-        var exact = await LookupAdfAsync(adfPath, access, preferences, cancellationToken);
+        var exact = Path.GetExtension(adfPath).Equals(".adf", StringComparison.OrdinalIgnoreCase)
+            ? await LookupAdfAsync(adfPath, access, preferences, cancellationToken)
+            : null;
         var matches = new List<MetadataSuggestion>();
         if (exact is not null) matches.Add(exact);
         var stem = Path.GetFileNameWithoutExtension(adfPath);
         var title = DiskSetGrouper.BaseTitle(adfPath) ??
             AdfMetadataSuggester.SuggestFromFileName(stem)?.Metadata.Title ??
-            Regex.Replace(stem.Replace('_', ' '), @"\s+(?:19|20)\d{2}.*$", "",
-                RegexOptions.CultureInvariant).Trim();
-        title = Regex.Replace(title, @"\s+v\d+(?:\.\d+)*$", "",
-            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).Trim();
-        if (exact is null) title = RemoveParentheticalFileTags(title);
+            stem;
+        if (exact is null) title = CleanFileNameForSearch(title);
         foreach (var candidate in NameSearchCandidates(title))
         {
             var query = BaseQuery(access);
@@ -116,6 +115,20 @@ public sealed class ScreenScraperClient(HttpClient httpClient)
             .Trim(' ', '-', '_');
     }
 
+    internal static string CleanFileNameForSearch(string title)
+    {
+        var cleaned = title.Replace('_', ' ');
+        cleaned = Regex.Replace(cleaned, @"(?<=[a-z0-9])(?=[A-Z])", " ",
+            RegexOptions.CultureInvariant);
+        cleaned = RemoveParentheticalFileTags(cleaned);
+        cleaned = Regex.Replace(cleaned,
+            @"(?:^|\s)(?:v\d+(?:\.\d+)*|PAL|NTSC|AGA|OCS|ECS|WHDLoad|Arcadia)(?=\s|$)", " ",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        cleaned = Regex.Replace(cleaned, @"\s+(?:19|20)\d{2}\s*$", "",
+            RegexOptions.CultureInvariant);
+        return Regex.Replace(cleaned, @"\s+", " ", RegexOptions.CultureInvariant)
+            .Trim(' ', '-', '_');
+    }
     public async Task<MetadataSuggestion?> LookupAdfAsync(string adfPath, ScreenScraperAccess access,
         CancellationToken cancellationToken = default) =>
         await LookupAdfAsync(adfPath, access, ScreenScraperPreferences.Default, cancellationToken);

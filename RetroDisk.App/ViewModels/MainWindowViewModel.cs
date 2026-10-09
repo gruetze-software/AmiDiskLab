@@ -143,7 +143,7 @@ public partial class MainWindowViewModel(IRetroSoftwareScanner scanner, IArchive
     public bool CanStartOperation => !IsBusy;
     public bool CanCreateAdf => !IsBusy && SelectedItem?.Format == SoftwareFormat.Lha;
     public bool CanEditMetadata => !IsBusy && SelectedItem is not null;
-    public bool CanLookupOnline => !IsBusy && SelectedItem?.Format == SoftwareFormat.Adf;
+    public bool CanLookupOnline => !IsBusy && SelectedItem is not null;
     public bool CanLookupScene => !IsBusy && SelectedItem is not null;
 
     public async Task<IReadOnlyList<MetadataSuggestion>> LookupSceneMetadataAsync(string query)
