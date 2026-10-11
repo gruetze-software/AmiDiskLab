@@ -283,8 +283,10 @@
 		<TextBlock Grid.Row="2"
 							 Text="{Binding StatusText}"
                Foreground="{DynamicResource AppSecondaryTextBrush}"
-							 TextWrapping="Wrap"
-								 FontSize="12"/>
+							 TextWrapping="NoWrap"
+               TextTrimming="CharacterEllipsis"
+							 FontSize="11"
+               LineHeight="14"/>
 
 		<!-- Progress -->
 		<StackPanel Grid.Row="3" IsVisible="{Binding IsBusy}"

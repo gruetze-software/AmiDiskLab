@@ -111,6 +111,17 @@
 								 MaxWidth="420"
 								 Margin="0,8"/>
 
+			<Separator Margin="0,4"/>
+
+			<TextBlock Text="Technology"
+							 FontWeight="SemiBold"
+							 HorizontalAlignment="Center"/>
+
+			<TextBlock Text="Built with C# 14 on .NET 10 and Avalonia UI 11.3.12."
+							 FontSize="11"
+							 Opacity="0.7"
+							 HorizontalAlignment="Center"/>
+
 			<Button Content="Close"
 							Width="110"
 							HorizontalAlignment="Center"
