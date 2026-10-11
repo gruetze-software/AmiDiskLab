@@ -64,7 +64,7 @@
 								 FontWeight="Bold"
 								 HorizontalAlignment="Center"/>
 
-			<TextBlock Text="Copyright © 2026 Christoph Schaefer"
+			<TextBlock Text="Copyright © 2026 Grütze-Software"
 								 FontSize="12"
 								 HorizontalAlignment="Center"/>
 

@@ -2,7 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="AmiDiskLab.App.App"
              xmlns:local="using:AmiDiskLab.App"
+             Name="AmiDiskLab"
              RequestedThemeVariant="Default">
+  <NativeMenu.Menu>
+    <NativeMenu NeedsUpdate="MenuNeedsUpdate">
+      <NativeMenuItem Header="About AmiDiskLab" Click="AboutMenu_Click" IsEnabled="False"/>
+      <NativeMenuItemSeparator/>
+      <NativeMenuItem Header="Settings…" Click="SettingsMenu_Click" Gesture="Meta+OemComma" IsEnabled="False"/>
+      <NativeMenuItem Header="Refresh Collection" Click="RefreshMenu_Click" Gesture="Meta+R" IsEnabled="False"/>
+    </NativeMenu>
+  </NativeMenu.Menu>
   <Application.DataTemplates>
     <local:ViewLocator/>
   </Application.DataTemplates>

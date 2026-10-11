@@ -68,16 +68,20 @@ public partial class MainWindow : Window
         finally { _dialogOpen = false; }
     }
 
-    private async void About_Click(object? sender, RoutedEventArgs e)
+    private async void About_Click(object? sender, RoutedEventArgs e) => await ShowAboutAsync();
+
+    public async System.Threading.Tasks.Task ShowAboutAsync()
     {
+        if (_dialogOpen || DataContext is not MainWindowViewModel { IsBusy: false } viewModel) return;
+        _dialogOpen = true;
         try { await new AboutWindow().ShowDialog(this); }
-        catch (Exception ex)
-        {
-            if (DataContext is MainWindowViewModel viewModel) viewModel.ReportError("About dialog failed", ex);
-        }
+        catch (Exception ex) { viewModel.ReportError("About dialog failed", ex); }
+        finally { _dialogOpen = false; }
     }
 
-    private async void Settings_Click(object? sender, RoutedEventArgs e)
+    private async void Settings_Click(object? sender, RoutedEventArgs e) => await ShowSettingsAsync();
+
+    public async System.Threading.Tasks.Task ShowSettingsAsync()
     {
         if (_dialogOpen || DataContext is not MainWindowViewModel { IsBusy: false } viewModel) return;
         _dialogOpen = true;
@@ -97,6 +101,14 @@ public partial class MainWindow : Window
         }
         catch (Exception ex) { viewModel.ReportError("Target settings failed", ex); }
         finally { _dialogOpen = false; }
+    }
+
+    public async System.Threading.Tasks.Task RefreshCollectionAsync()
+    {
+        if (_dialogOpen || DataContext is not MainWindowViewModel { IsBusy: false } viewModel ||
+            string.IsNullOrWhiteSpace(viewModel.SelectedFolder) ||
+            !Directory.Exists(viewModel.SelectedFolder)) return;
+        await viewModel.LoadFolderAsync(viewModel.SelectedFolder);
     }
 
     private void Cancel_Click(object? sender, RoutedEventArgs e)
