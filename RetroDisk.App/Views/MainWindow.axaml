@@ -81,10 +81,9 @@
                 <StackPanel Spacing="3" VerticalAlignment="Center">
                   <StackPanel Orientation="Horizontal" Spacing="9" VerticalAlignment="Center">
                     <TextBlock Text="AmiDiskLab" FontSize="22" FontWeight="Bold"/>
-                    <Border Background="{DynamicResource AppPanelBrush}" CornerRadius="5" Padding="7,2">
-                      <TextBlock Text="{Binding ProductVersion}" FontSize="10"
-                                 Foreground="{DynamicResource AppSecondaryTextBrush}"/>
-                    </Border>
+                    <TextBlock Text="{Binding ProductVersion}" FontSize="11"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource AppSecondaryTextBrush}"/>
                   </StackPanel>
                   <StackPanel Orientation="Horizontal" Spacing="6">
                     <TextBlock Text="{Binding ProductSubtitle}" FontSize="11"
