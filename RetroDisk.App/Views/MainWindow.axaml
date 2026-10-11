@@ -13,9 +13,10 @@
         Title="AmiDiskLab"
         Width="1120"
         Height="650"
-        MinWidth="1100"
+        MinWidth="900"
         MinHeight="450"
-        FontSize="13">
+        FontSize="13"
+        Background="{DynamicResource AppBackgroundBrush}">
 	<Window.Resources>
       <app:CoverThumbnailConverter x:Key="CoverThumbnailConverter"/>
       <app:DuplicateTextBrushConverter x:Key="DuplicateTextBrushConverter"/>
@@ -23,13 +24,20 @@
       <app:BrandLogoVisibilityConverter x:Key="BrandLogoVisibilityConverter"/>
     </Window.Resources>
     <Window.Styles>
+      <Style Selector="Button">
+        <Setter Property="CornerRadius" Value="7"/>
+      </Style>
+      <Style Selector="TextBlock.secondary">
+        <Setter Property="Foreground" Value="{DynamicResource AppSecondaryTextBrush}"/>
+      </Style>
       <Style Selector="Button.sort-header">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="0,6"/>
+        <Setter Property="Padding" Value="8,7"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="CornerRadius" Value="6"/>
       </Style>
       <Style Selector="TextBlock.cell-text">
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -38,20 +46,24 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
       </Style>
       <Style Selector="ListBox.software-list">
-        <Setter Property="Background" Value="{DynamicResource AppPanelBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
       </Style>
       <Style Selector="ListBox.software-list > ListBoxItem">
         <Setter Property="Background" Value="{DynamicResource AppRowBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="9"/>
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="Margin" Value="0,0,0,1"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
       </Style>
       <Style Selector="ListBox.software-list > ListBoxItem:pointerover">
         <Setter Property="Background" Value="{DynamicResource AppRowHoverBrush}"/>
       </Style>
       <Style Selector="ListBox.software-list > ListBoxItem:selected">
-        <Setter Property="Background" Value="#17679B"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource AppSelectedRowBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AppAccentBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
       </Style>
     </Window.Styles>
 
@@ -60,7 +72,7 @@
       RowSpacing="12">
 
 		<!-- Header -->
-		<Border Grid.Row="0" BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="12,9">
+		<Border Grid.Row="0" Background="{DynamicResource AppRowBrush}" BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="14,11">
           <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="10" RowSpacing="6">
             <StackPanel Grid.RowSpan="2" Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
               <Image Source="/Assets/AmiDiskLab_128.png" Width="52" Height="52" Stretch="Uniform"/>
@@ -106,17 +118,17 @@
 		<Border Grid.Row="1"
         BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1"
         Background="{DynamicResource AppPanelBrush}"
-        CornerRadius="9"
-        Padding="8">
+        CornerRadius="10"
+        Padding="10">
 
-			<Grid RowDefinitions="Auto,*">
+			<Grid RowDefinitions="Auto,*" RowSpacing="8">
 
 				<!-- Column headers -->
 				<Grid Grid.Row="0"
 							IsEnabled="{Binding CanStartOperation}"
 							ColumnDefinitions="82,1.6*,72,56,70,110,1.1*,0.85*,48,76,68"
 							ColumnSpacing="12"
-							Margin="8,10,24,12">
+							Margin="10,6,26,4">
 
 					<Button Grid.Column="1" Classes="sort-header" Tag="Name"
                             Content="{Binding NameSortHeader}" Click="SortHeader_Click"/>
@@ -185,10 +197,10 @@
 						                  HorizontalContentAlignment="Stretch">
 							<Grid ColumnDefinitions="82,1.6*,72,56,70,110,1.1*,0.85*,48,76,68"
 									ColumnSpacing="12"
-									Margin="8,6" MinHeight="108">
+									Margin="12,8" MinHeight="112">
 
                                 <Border Grid.Column="0" Width="80" Height="98" Background="{DynamicResource AppRowHoverBrush}"
-                                        BorderBrush="#60656D" BorderThickness="1" CornerRadius="5"
+                                        BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1" CornerRadius="5"
                                         HorizontalAlignment="Left" VerticalAlignment="Center">
                                   <Grid>
                                     <TextBlock Text="ADF" FontSize="10" FontWeight="SemiBold" Opacity="0.4"
@@ -200,7 +212,7 @@
 
 								<StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
 								  <TextBlock Classes="cell-text" Text="{Binding DisplayTitle}" FontSize="15" FontWeight="SemiBold"/>
-                                  <TextBlock Classes="cell-text" Text="{Binding DisplaySubtitle}" FontSize="11" Opacity="0.72"/>
+                                  <TextBlock Classes="cell-text" Text="{Binding DisplaySubtitle}" FontSize="11" Foreground="{DynamicResource AppSecondaryTextBrush}"/>
                                 </StackPanel>
 
 								<TextBlock Grid.Column="2" Classes="cell-text" Text="{Binding Type}"/>
@@ -249,6 +261,7 @@
 		<!-- Status -->
 		<TextBlock Grid.Row="2"
 							 Text="{Binding StatusText}"
+               Foreground="{DynamicResource AppSecondaryTextBrush}"
 							 TextWrapping="Wrap"
 								 FontSize="12"/>
 

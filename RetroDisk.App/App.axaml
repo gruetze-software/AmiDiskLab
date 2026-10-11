@@ -19,21 +19,34 @@
     <ResourceDictionary>
       <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
-          <SolidColorBrush x:Key="AppPanelBrush" Color="#F3F4F6"/>
+          <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F4F6F7"/>
+          <SolidColorBrush x:Key="AppPanelBrush" Color="#EAF0F0"/>
           <SolidColorBrush x:Key="AppRowBrush" Color="#FFFFFF"/>
-          <SolidColorBrush x:Key="AppRowHoverBrush" Color="#E7EDF3"/>
-          <SolidColorBrush x:Key="AppBorderBrush" Color="#B8BEC6"/>
+          <SolidColorBrush x:Key="AppRowHoverBrush" Color="#EEF4F3"/>
+          <SolidColorBrush x:Key="AppSelectedRowBrush" Color="#DCECEA"/>
+          <SolidColorBrush x:Key="AppSecondaryTextBrush" Color="#53646A"/>
+          <SolidColorBrush x:Key="AppAccentBrush" Color="#216F69"/>
+          <SolidColorBrush x:Key="AppBorderBrush" Color="#D5DEE0"/>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
-          <SolidColorBrush x:Key="AppPanelBrush" Color="#34383F"/>
-          <SolidColorBrush x:Key="AppRowBrush" Color="#3B3F46"/>
-          <SolidColorBrush x:Key="AppRowHoverBrush" Color="#474C54"/>
-          <SolidColorBrush x:Key="AppBorderBrush" Color="#50545A"/>
+          <SolidColorBrush x:Key="AppBackgroundBrush" Color="#151C21"/>
+          <SolidColorBrush x:Key="AppPanelBrush" Color="#1A2328"/>
+          <SolidColorBrush x:Key="AppRowBrush" Color="#202A30"/>
+          <SolidColorBrush x:Key="AppRowHoverBrush" Color="#29373D"/>
+          <SolidColorBrush x:Key="AppSelectedRowBrush" Color="#294846"/>
+          <SolidColorBrush x:Key="AppSecondaryTextBrush" Color="#B1C1C6"/>
+          <SolidColorBrush x:Key="AppAccentBrush" Color="#68CBBE"/>
+          <SolidColorBrush x:Key="AppBorderBrush" Color="#37454C"/>
         </ResourceDictionary>
       </ResourceDictionary.ThemeDictionaries>
     </ResourceDictionary>
   </Application.Resources>
   <Application.Styles>
-    <FluentTheme />
+    <FluentTheme>
+      <FluentTheme.Palettes>
+        <ColorPaletteResources x:Key="Light" Accent="#216F69"/>
+        <ColorPaletteResources x:Key="Dark" Accent="#68CBBE"/>
+      </FluentTheme.Palettes>
+    </FluentTheme>
   </Application.Styles>
 </Application>
