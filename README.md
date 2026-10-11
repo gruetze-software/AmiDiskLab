@@ -9,7 +9,8 @@
   Organize disk collections, enrich them with metadata, and create or extract ADF images.
 </p>
 
-<img width="1402" height="851" alt="grafik" src="https://github.com/user-attachments/assets/ff90e63f-bc03-42ef-960e-a7f8a6ab985c" />
+<img width="1122" height="682" alt="grafik" src="https://github.com/user-attachments/assets/9476c407-b4d3-4a5c-abb2-01d9ce858bd0" />
+
 
 <img width="1127" height="851" alt="grafik" src="https://github.com/user-attachments/assets/7c8f558a-321b-498a-a429-6173788abb6d" />
 
