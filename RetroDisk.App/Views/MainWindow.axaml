@@ -67,12 +67,12 @@
       </Style>
     </Window.Styles>
 
-	<Grid Margin="16"
+	<Grid Margin="16,16,16,0"
       RowDefinitions="Auto,*,Auto,Auto"
-      RowSpacing="12">
+      RowSpacing="0">
 
 		<!-- Header -->
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="10">
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="10" Margin="0,0,0,12">
           <Border Grid.Column="0" Background="{DynamicResource AppRowBrush}"
                   BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1"
                   CornerRadius="10" Padding="12,9">
@@ -280,17 +280,21 @@
 		</Border>
 
 		<!-- Status -->
-		<TextBlock Grid.Row="2"
-							 Text="{Binding StatusText}"
-               Foreground="{DynamicResource AppSecondaryTextBrush}"
-							 TextWrapping="NoWrap"
-               TextTrimming="CharacterEllipsis"
-							 FontSize="11"
-               LineHeight="14"/>
+        <Border Grid.Row="2" Margin="0,6,0,0" Padding="6,2"
+                Background="{DynamicResource AppPanelBrush}"
+                BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1"
+                CornerRadius="4">
+		  <TextBlock Text="{Binding StatusText}"
+                 Foreground="{DynamicResource AppSecondaryTextBrush}"
+							   TextWrapping="NoWrap"
+                 TextTrimming="CharacterEllipsis"
+							   FontSize="10"
+                 LineHeight="13"/>
+        </Border>
 
 		<!-- Progress -->
 		<StackPanel Grid.Row="3" IsVisible="{Binding IsBusy}"
-            Spacing="6">
+            Margin="0,8,0,4" Spacing="6">
 
 			<Button IsEnabled="{Binding IsBusy}" Click="Cancel_Click" HorizontalAlignment="Left">
               <StackPanel Orientation="Horizontal" Spacing="6">
