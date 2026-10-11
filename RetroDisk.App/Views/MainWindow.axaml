@@ -121,12 +121,11 @@
                   </StackPanel>
                 </Button>
               </StackPanel>
-              <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                <TextBlock Text="Folder" FontSize="11" FontWeight="SemiBold"
-                           Foreground="{DynamicResource AppAccentBrush}"/>
-                <TextBlock Text="{Binding SelectedFolder}" TextTrimming="CharacterEllipsis"
+              <Border Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"
+                      Background="{DynamicResource AppPanelBrush}" CornerRadius="6" Padding="9,4">
+                <TextBlock Text="{Binding SelectedFolder}" FontSize="11" TextTrimming="CharacterEllipsis"
                            Foreground="{DynamicResource AppSecondaryTextBrush}"/>
-              </StackPanel>
+              </Border>
               <Border Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"
                       Background="{DynamicResource AppPanelBrush}" CornerRadius="6" Padding="9,4">
                 <TextBlock Text="{Binding TargetSystemSummary}" FontSize="11"
