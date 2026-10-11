@@ -2,85 +2,164 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="AmiDiskLab.App.Views.ConfigurationWindow"
         Icon="/Assets/AmiDiskLab.ico"
-
-        Title="Settings" Width="560" Height="520" MinWidth="520" MinHeight="460"
-        WindowStartupLocation="CenterOwner" FontSize="12">
+        Title="Settings"
+        Width="640" Height="620" MinWidth="560" MinHeight="520"
+        WindowStartupLocation="CenterOwner" FontSize="13"
+        Background="{DynamicResource AppBackgroundBrush}">
   <Window.Styles>
     <Style Selector="TabItem">
       <Setter Property="FontSize" Value="13"/>
-      <Setter Property="Padding" Value="12,8"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Padding" Value="14,9"/>
       <Setter Property="MinWidth" Value="0"/>
     </Style>
+    <Style Selector="TextBlock.hint">
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Foreground" Value="{DynamicResource AppSecondaryTextBrush}"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style Selector="TextBlock.field-label">
+      <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
   </Window.Styles>
-  <Grid Margin="20" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="10">
-    <TextBlock Text="Settings" FontSize="20" FontWeight="SemiBold"/>
+
+  <Grid Margin="28" RowDefinitions="Auto,*,Auto,Auto">
+    <StackPanel Spacing="6" Margin="0,0,0,18">
+      <TextBlock Text="Settings" FontSize="25" FontWeight="SemiBold"/>
+      <TextBlock Text="Configure the emulated Amiga, metadata service, and application appearance."
+                 Classes="hint"/>
+    </StackPanel>
+
     <TabControl x:Name="SettingsTabs" Grid.Row="1">
       <TabItem Header="Amiga" ToolTip.Tip="Amiga target system">
-        <Border BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="0,1,0,0" Margin="0,4,0,0" Padding="12,14,12,0">
-          <StackPanel Spacing="10">
-          <TextBlock Text="Amiga 500 · Motorola 68000" FontWeight="SemiBold"/>
-          <TextBlock Text="Kickstart"/>
-          <ComboBox x:Name="KickstartBox">
-            <ComboBoxItem Content="1.3"/><ComboBoxItem Content="2.0"/><ComboBoxItem Content="3.1"/>
-          </ComboBox>
-          <TextBlock Text="RAM"/>
-          <ComboBox x:Name="RamBox">
-            <ComboBoxItem Content="1 MiB"/><ComboBoxItem Content="2 MiB"/>
-            <ComboBoxItem Content="4 MiB"/><ComboBoxItem Content="8 MiB"/>
-          </ComboBox>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,14,0,0" Spacing="14">
+            <Border Background="{DynamicResource AppRowBrush}"
+                    BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1"
+                    CornerRadius="10" Padding="18">
+              <StackPanel Spacing="14">
+                <StackPanel Spacing="4">
+                  <TextBlock Text="Target hardware" FontSize="16" FontWeight="SemiBold"/>
+                  <TextBlock Text="Choose the Amiga configuration used for compatibility information and generated disk images."
+                             Classes="hint"/>
+                </StackPanel>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                  <StackPanel Grid.Column="0" Spacing="7">
+                    <TextBlock Text="Kickstart" Classes="field-label"/>
+                    <ComboBox x:Name="KickstartBox">
+                      <ComboBoxItem Content="1.3"/><ComboBoxItem Content="2.0"/><ComboBoxItem Content="3.1"/>
+                    </ComboBox>
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Spacing="7">
+                    <TextBlock Text="Memory" Classes="field-label"/>
+                    <ComboBox x:Name="RamBox">
+                      <ComboBoxItem Content="1 MiB"/><ComboBoxItem Content="2 MiB"/>
+                      <ComboBoxItem Content="4 MiB"/><ComboBoxItem Content="8 MiB"/>
+                    </ComboBox>
+                  </StackPanel>
+                </Grid>
+              </StackPanel>
+            </Border>
           </StackPanel>
-        </Border>
+        </ScrollViewer>
       </TabItem>
+
       <TabItem Header="ScreenScraper" ToolTip.Tip="ScreenScraper account and metadata preferences">
-        <Border BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="0,1,0,0" Margin="0,4,0,0" Padding="12,14,12,0">
-          <StackPanel Spacing="8">
-          <TextBlock Text="ScreenScraper username (optional)"/><TextBox x:Name="UserIdBox"/>
-          <TextBlock Text="ScreenScraper password (optional)"/><TextBox x:Name="UserPasswordBox" PasswordChar="●"/>
-          <TextBlock x:Name="CredentialHint" Text="A personal ScreenScraper account is not required. Signing in uses your account limits and member benefits. Your credentials are encrypted for your Windows account. Clear both fields and save to remove them."
-                     Opacity="0.7" TextWrapping="Wrap" Margin="0,0,0,4"/>
-          <TextBlock Text="Description language"/>
-          <ComboBox x:Name="LanguageBox">
-            <ComboBoxItem Content="German"/><ComboBoxItem Content="English"/>
-            <ComboBoxItem Content="French"/><ComboBoxItem Content="Spanish"/>
-            <ComboBoxItem Content="Italian"/>
-          </ComboBox>
-          <TextBlock Text="Region for titles, release dates, and covers"/>
-          <ComboBox x:Name="RegionBox">
-            <ComboBoxItem Content="Europe"/><ComboBoxItem Content="USA"/>
-            <ComboBoxItem Content="Japan"/><ComboBoxItem Content="World"/>
-          </ComboBox>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,14,0,0" Spacing="14">
+            <Border Background="{DynamicResource AppRowBrush}"
+                    BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1"
+                    CornerRadius="10" Padding="18">
+              <StackPanel Spacing="9">
+                <TextBlock Text="Personal account" FontSize="16" FontWeight="SemiBold"/>
+                <TextBlock Text="ScreenScraper username (optional)" Classes="field-label"/>
+                <TextBox x:Name="UserIdBox"/>
+                <TextBlock Text="ScreenScraper password (optional)" Classes="field-label" Margin="0,3,0,0"/>
+                <TextBox x:Name="UserPasswordBox" PasswordChar="●"/>
+                <TextBlock x:Name="CredentialHint"
+                           Text="A personal ScreenScraper account is not required. Signing in uses your account limits and member benefits. Your credentials are encrypted for your Windows account. Clear both fields and save to remove them."
+                           Classes="hint" Margin="0,3,0,0"/>
+              </StackPanel>
+            </Border>
+
+            <Border Background="{DynamicResource AppRowBrush}"
+                    BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1"
+                    CornerRadius="10" Padding="18">
+              <StackPanel Spacing="12">
+                <StackPanel Spacing="4">
+                  <TextBlock Text="Metadata preferences" FontSize="16" FontWeight="SemiBold"/>
+                  <TextBlock Text="Select the preferred language and regional media variants."
+                             Classes="hint"/>
+                </StackPanel>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                  <StackPanel Grid.Column="0" Spacing="7">
+                    <TextBlock Text="Description language" Classes="field-label"/>
+                    <ComboBox x:Name="LanguageBox">
+                      <ComboBoxItem Content="German"/><ComboBoxItem Content="English"/>
+                      <ComboBoxItem Content="French"/><ComboBoxItem Content="Spanish"/>
+                      <ComboBoxItem Content="Italian"/>
+                    </ComboBox>
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Spacing="7">
+                    <TextBlock Text="Title, date, and cover region" Classes="field-label"/>
+                    <ComboBox x:Name="RegionBox">
+                      <ComboBoxItem Content="Europe"/><ComboBoxItem Content="USA"/>
+                      <ComboBoxItem Content="Japan"/><ComboBoxItem Content="World"/>
+                    </ComboBox>
+                  </StackPanel>
+                </Grid>
+              </StackPanel>
+            </Border>
           </StackPanel>
-        </Border>
+        </ScrollViewer>
       </TabItem>
+
       <TabItem Header="Appearance" ToolTip.Tip="Application colors and theme">
-        <Border BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="0,1,0,0" Margin="0,4,0,0" Padding="12,14,12,0">
-          <StackPanel Spacing="10">
-          <TextBlock Text="Color theme"/>
-          <ComboBox x:Name="ThemeBox">
-            <ComboBoxItem Content="Use system setting"/>
-            <ComboBoxItem Content="Dark"/>
-            <ComboBoxItem Content="Light"/>
-          </ComboBox>
-          <TextBlock Text="The setting applies to the entire application and is restored the next time AmiDiskLab starts."
-                     Opacity="0.7" TextWrapping="Wrap"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,14,0,0" Spacing="14">
+            <Border Background="{DynamicResource AppRowBrush}"
+                    BorderBrush="{DynamicResource AppBorderBrush}" BorderThickness="1"
+                    CornerRadius="10" Padding="18">
+              <StackPanel Spacing="9">
+                <TextBlock Text="Application theme" FontSize="16" FontWeight="SemiBold"/>
+                <TextBlock Text="Color theme" Classes="field-label"/>
+                <ComboBox x:Name="ThemeBox">
+                  <ComboBoxItem Content="Use system setting"/>
+                  <ComboBoxItem Content="Dark"/>
+                  <ComboBoxItem Content="Light"/>
+                </ComboBox>
+                <TextBlock Text="The theme applies to the entire application and is restored the next time AmiDiskLab starts."
+                           Classes="hint"/>
+              </StackPanel>
+            </Border>
           </StackPanel>
-        </Border>
+        </ScrollViewer>
       </TabItem>
     </TabControl>
-    <TextBlock x:Name="ValidationText" Grid.Row="2" Foreground="OrangeRed" TextWrapping="Wrap"/>
-    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
-      <Button Click="Cancel_Click">
-        <StackPanel Orientation="Horizontal" Spacing="6">
-          <PathIcon Width="14" Height="14" Data="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
-          <TextBlock Text="Cancel"/>
-        </StackPanel>
-      </Button>
-      <Button Click="Save_Click">
-        <StackPanel Orientation="Horizontal" Spacing="6">
-          <PathIcon Width="14" Height="14" Data="M5 3h14l2 2v16H3V3h2zm2 0v6h10V3H7zm0 11v7h10v-7H7z"/>
-          <TextBlock Text="Save settings"/>
-        </StackPanel>
-      </Button>
-    </StackPanel>
+
+    <TextBlock x:Name="ValidationText" Grid.Row="2" Foreground="OrangeRed"
+               TextWrapping="Wrap" Margin="0,10,0,0"/>
+
+    <Border Grid.Row="3" BorderBrush="{DynamicResource AppBorderBrush}"
+            BorderThickness="0,1,0,0" Margin="0,14,0,0" Padding="0,14,0,0">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+        <Button Click="Cancel_Click" Padding="16,8">
+          <StackPanel Orientation="Horizontal" Spacing="7">
+            <PathIcon Width="14" Height="14" Data="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
+            <TextBlock Text="Cancel"/>
+          </StackPanel>
+        </Button>
+        <Button Click="Save_Click" Padding="16,8"
+                Background="{DynamicResource AppAccentBrush}" Foreground="White">
+          <StackPanel Orientation="Horizontal" Spacing="7">
+            <PathIcon Width="14" Height="14" Data="M5 3h14l2 2v16H3V3h2zm2 0v6h10V3H7zm0 11v7h10v-7H7z"/>
+            <TextBlock Text="Save settings"/>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </Border>
   </Grid>
 </Window>
