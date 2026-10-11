@@ -105,14 +105,16 @@ public partial class MainWindowViewModel(IRetroSoftwareScanner scanner, IArchive
     private AmigaTargetSystem _targetSystem = TargetSystemSettingsStore.Load();
 
     public string TargetSystemSummary => $"A500 · KS {TargetSystem.KickstartLabel} · {TargetSystem.RamMiB} MiB";
-    public string ProductSubtitle
+    public string ProductSubtitle => "Amiga Disk & Software Manager";
+
+    public string ProductVersion
     {
         get
         {
             var version = typeof(MainWindowViewModel).Assembly
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
                 .Split('+')[0];
-            return $"Amiga Disk & Software Manager Version {version ?? "unknown"}";
+            return $"Version {version ?? "unknown"}";
         }
     }
 
